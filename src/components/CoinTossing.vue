@@ -1,22 +1,22 @@
 <template>
   <div id="cointossing">
-    <h1 class="title">Coin Tossing Gusser</h1>
+    <h1 class="title">Coin Tossing Guesser</h1>
     <div class="box">
       <div class="left-container">
         <div class="option">{{topping}}</div>
         <div class="option-container">
           <transition name="bounce">
             <div v-if="showHead" class="choice-preview">
-            <div>
+              <div>
                 <p class="preview-text"> Head </p>
-            </div>
+              </div>
             </div>
           </transition>
           <transition name="bounce">
             <div v-if="showTail" class="choice-preview">
-            <div>
+              <div>
                 <p class="preview-text"> Tail </p>
-            </div>
+              </div>
             </div>
           </transition>
           <transition name="bounce">
@@ -35,19 +35,24 @@
         <div class="option">
           <span id="white">{{totalPrice}}</span>
         </div>
-        <div class="pizza-div" >
-        <div :class="crustClass" class="pizza flip">
+        <div class="pizza-div heads" id="coin">
+          <div class="side-a"></div>
+          <div class="side-b"></div>
         </div>
-        <div :class="crustClass" class="pizza-back flip">
-        </div>
-        </div>
+        <!--<div class="pizza-div flip">
+          <div class="pizza">
+          </div>
+          <div class="pizza-back">
+          </div>
+        </div>-->
         <div class="totalButton">
-           <div v-if="buttonsOn" class="flip-button">Flip it!</div>
+          <div v-if="buttonsOn" class="flip-button">Flip it!</div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
   export default {
@@ -71,23 +76,51 @@
         totalPrice: "Result",
         prices: [2, 2, 3, 3, 3],
         crustClass: "pizza",
-        buttonsOn: true
+        buttonsOn: true,
+        count: 0,
+        flipped: false
       }
     },
+    mounted: function () {
+      document.querySelector('#coin.heads').addEventListener('animationend', function () {
+        console.log("animationend")
+      });
+
+      let self = this
+      document.querySelector('#coin.heads').addEventListener('animationiteration', function () {
+        console.log("animationiteration plus one")
+        self.count = self.count + 1;
+        if (self.flipped == true) {
+          console.log("regular animation stopped.")
+          document.querySelector('#coin.heads').classList.remove("heads")
+          document.querySelector('#coin').classList.add("heads2")
+          self.flipped = false
+        // console.log(document.querySelector('#coin.heads').style.height)
+        }
+      });
+
+      var time = Math.random() * 10
+      console.log('cost ' + time + ' seconds.')
+      setTimeout(function () {
+        self.flipped = true
+      }, time * 1000)
+    },
+
     methods: {
       processTopping: function (selection) {
-          if(selection == 2){
-              this.showHead = false
-              this.showTail = true
-          } else{
-              this.showHead = true
-              this.showTail = false
-          }
+        if (selection == 2) {
+          this.showHead = false
+          this.showTail = true
+        } else {
+          this.showHead = true
+          this.showTail = false
+        }
       }
     }
 
-  }
-</script>
+  } 
+  </script>
+
 
 
 <style scoped>
@@ -186,6 +219,10 @@ position: absolute;
   text-align: center;
 }
 
+.pizza-div {
+    height: 100%;
+}
+
 .pizza{
   position: absolute;
   height: 40%;
@@ -194,26 +231,65 @@ position: absolute;
   left: 27.5%;
   border-radius: 50%;
   background: #FDE4A7;
- 
-  background: url("../assets/US_One_Cent_Rev.png");
-  background-size: cover;
   
+  background-size: cover;
   z-index: 2;
+  animation: flipHeads 3s infinite
 }
 
-.pizza-back{
+#coin {
+  position: relative;
+  margin: 5% auto;
+  width: 180px;
+  height: 180px;
+  cursor: pointer;
+}
+#coin div {
+  width: 100%;
+  height: 100%;
+  -webkit-border-radius: 50%;
+     -moz-border-radius: 50%;
+          border-radius: 50%;
+  -webkit-box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4);
+     -moz-box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4);
+          box-shadow: inset 0 0 45px rgba(255,255,255,.3), 0 12px 20px -10px rgba(0,0,0,.4);
+}
+
+.side-a {
   position: absolute;
   height: 40%;
   width: 45%;
-  top: 30%;
-  left: 27.5%;
   border-radius: 50%;
-  background: #aaE4A7;
-  transform: rotateY(-180deg);
+  background: #FDE4A7;
   background: url("../assets/US_One_Cent_Obv.png");
   background-size: cover;
 }
+.side-b {
+  position: absolute;
+  height: 40%;
+  width: 45%;
+  border-radius: 50%;
+  background: #aaE4A7;
+  transform: rotateY(-180deg);
+  background: url("../assets/US_One_Cent_Rev.png");
+  background-size: cover;
+}
 
+#coin {
+  transition: -webkit-transform 1s ease-in;
+  -webkit-transform-style: preserve-3d;
+}
+#coin div {
+  position: absolute;
+  -webkit-backface-visibility: hidden;
+}
+.side-a {
+  z-index: 100;
+}
+.side-b {
+  -webkit-transform: rotateY(-180deg);
+
+}
 
 .spin-pizza{
   animation: spinPizza 1s infinite;
@@ -525,6 +601,20 @@ clip-path: polygon(100% 0, 0 0, 50% 100%);
     animation: flipHeads 3s ease-out forwards;
 }
 
+#coin.heads {
+  -webkit-animation: flipHeads 3s ease-out forwards;
+  -moz-animation: flipHeads 3s ease-out forwards;
+    -o-animation: flipHeads 3s ease-out forwards;
+       animation: flipHeads 3s linear infinite;
+}
+
+#coin.heads2 {
+  -webkit-animation: flipHeads 3s ease-out forwards;
+  -moz-animation: flipHeads 3s ease-out forwards;
+    -o-animation: flipHeads 3s ease-out forwards;
+       animation: flipHeads2 3s ease-out forwards;
+}
+
 @keyframes flipIt {
 
   0%    { -webkit-transform:rotateY(360deg); }
@@ -533,6 +623,13 @@ clip-path: polygon(100% 0, 0 0, 50% 100%);
 }
 
 @keyframes flipHeads {
+  from { -webkit-transform: rotateY(0); -moz-transform: rotateY(0); transform: rotateY(0); }
+  to { -webkit-transform: rotateY(1800deg); -moz-transform: rotateY(1800deg); transform: rotateY(1800deg); }
+}
+/*
+记得要定义两个动画，否则addclass无效
+*/
+@keyframes flipHeads2 {
   from { -webkit-transform: rotateY(0); -moz-transform: rotateY(0); transform: rotateY(0); }
   to { -webkit-transform: rotateY(1800deg); -moz-transform: rotateY(1800deg); transform: rotateY(1800deg); }
 }
