@@ -1,55 +1,57 @@
 <template>
   <div>
-    <p class="tip">Click on button in image container</p>
+    <!-- <p class="tip">大济大利@GAME PLATFORM DEMO</p> -->
+    <p class="tip">  <p>
     <div class="cont">
       <div class="form sign-in">
-        <h2>Welcome back,</h2>
+        <h2>欢迎回来,</h2>
         <label>
-          <span>Email</span>
+          <span>电子邮件</span>
           <input type="email" />
         </label>
         <label>
-          <span>Password</span>
+          <span>登录密码</span>
           <input type="password" />
         </label>
-        <p class="forgot-pass">Forgot password?</p>
-        <button type="button" class="submit">Sign In</button>
-        <button type="button" class="fb-btn">Connect with
-          <span>facebook</span>
+        <p class="forgot-pass">忘记密码?</p>
+        <button type="button" class="submit">登录</button>
+        <button type="button" class="fb-btn">授权
+         <i class="fa fa-wechat wechat-icon"></i><span>Wechat</span> 登录
         </button>
       </div>
       <div class="sub-cont">
         <div class="img">
           <div class="img__text m--up">
-            <h2>New here?</h2>
-            <p>Sign up and discover great amount of new opportunities!</p>
+            <h2>第一次来到这？</h2>
+            <p>马上注册您的账户并尝试发现来自这里的无穷乐趣！</p>
           </div>
           <div class="img__text m--in">
-            <h2>One of us?</h2>
-            <p>If you already has an account, just sign in. We've missed you!</p>
+            <h2>我们中的一员？</h2>
+            <p>如果您已经有账户，请登录。</p>
+            <p>我们想念你！</p>
           </div>
           <div class="img__btn">
-            <span class="m--up">Sign Up</span>
-            <span class="m--in">Sign In</span>
+            <span class="m--up">注册</span>
+            <span class="m--in">登录</span>
           </div>
         </div>
         <div class="form sign-up">
-          <h2>Time to feel like home,</h2>
+          <h2>是时候开始你的探索了,</h2>
           <label>
-            <span>Name</span>
+            <span>用户昵称</span>
             <input type="text" />
           </label>
           <label>
-            <span>Email</span>
+            <span>邮件</span>
             <input type="email" />
           </label>
           <label>
-            <span>Password</span>
+            <span>登录密码</span>
             <input type="password" />
           </label>
-          <button type="button" class="submit">Sign Up</button>
-          <button type="button" class="fb-btn">Join with
-            <span>facebook</span>
+          <button type="button" class="submit">注册</button>
+          <button type="button" class="fb-btn">使用
+            <span>微信</span> 注册
           </button>
         </div>
       </div>
@@ -71,12 +73,16 @@ export default {
     document.querySelector('.img__btn').addEventListener('click', function () {
       document.querySelector('.cont').classList.toggle('s--signup');
     });
+
+    document.querySelector('#nav .current').classList.remove("current")
+    document.querySelector('.login-li').classList.add("current")
   }
 }
 </script>
 
 
 <style lang="scss" scoped>
+@import url("../assets/template/css/font-awesome.min.css");
 *, *:before, *:after {
   box-sizing: border-box;
   margin: 0;
@@ -84,7 +90,7 @@ export default {
 }
 
 body {
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', 'Open Sans', Helvetica, Arial, sans-serif;
   background: #ededed;
 }
 
@@ -178,7 +184,7 @@ button {
     top: 0;
     width: $contW;
     height: 100%;
-    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/sections-3.jpg');
+    background-image: url('../assets/template/images/pic001.png');
     background-size: cover;
     transition: transform $switchAT ease-in-out;
   }
@@ -303,7 +309,7 @@ label {
 
   span {
     font-size: 12px;
-    color: #cfcfcf;
+    color: #727272;
     text-transform: uppercase;
   }
 }
@@ -322,7 +328,7 @@ input {
   margin-top: 15px;
   text-align: center;
   font-size: 12px;
-  color: #cfcfcf;
+  color: #727272;
 }
 
 .submit {
@@ -330,6 +336,19 @@ input {
   margin-bottom: 20px;
   background: #d4af7a;
   text-transform: uppercase;
+}
+
+.submit:hover {
+  /*鼠标悬浮效果*/
+  /*阴影*/
+  box-shadow: 2px 2px 2px grey;
+  /*发光*/
+  background-color: #d4af7b;
+}
+
+.wechat-icon {
+  margin-right: 0.1em;
+  color: #62b900;
 }
 
 .fb-btn {

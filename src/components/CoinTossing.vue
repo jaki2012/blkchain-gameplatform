@@ -10,6 +10,7 @@
               <div>
                 <p class="preview-text"> Head </p>
               </div>
+              
             </div>
           </transition>
           <transition name="bounce">
@@ -19,6 +20,13 @@
               </div>
             </div>
           </transition>
+          <div class="plus">
+            <p>+</p>
+          </div>
+          <div class="random-seed">
+            <input v-model="randomSeed" placeholder="your seed?">
+          </div>
+
           <transition name="bounce">
             <div v-if="showMozWedge" class="moz-wedge">
             </div>
@@ -35,7 +43,7 @@
         <div class="option">
           <span id="white">{{totalPrice}}</span>
         </div>
-        <div class="pizza-div heads" id="coin">
+        <div class="pizza-div" id="coin">
           <div class="side-a"></div>
           <div class="side-b"></div>
         </div>
@@ -46,7 +54,7 @@
           </div>
         </div>-->
         <div class="totalButton">
-          <div v-if="buttonsOn" class="flip-button">Flip it!</div>
+          <div v-if="buttonsOn" @click="tossCoin()" class="flip-button">{{flipButton}}</div>
         </div>
       </div>
     </div>
@@ -78,35 +86,54 @@
         crustClass: "pizza",
         buttonsOn: true,
         count: 0,
+        flipButton: "Flip It!",
+        randomSeed: null,
+        flipping: false,
         flipped: false
       }
     },
     mounted: function () {
-      document.querySelector('#coin.heads').addEventListener('animationend', function () {
+      let self = this
+      console.log("CoinTossing mounted.")
+      document.querySelector('#coin').addEventListener('animationend', function () {
+        document.querySelector('#coin').classList.remove("heads2")
+        self.flipping = false
+        self.flipButton = "Flip It!"
         console.log("animationend")
       });
-
-      let self = this
-      document.querySelector('#coin.heads').addEventListener('animationiteration', function () {
+      document.querySelector('#coin').addEventListener('animationiteration', function () {
         console.log("animationiteration plus one")
         self.count = self.count + 1;
         if (self.flipped == true) {
           console.log("regular animation stopped.")
-          document.querySelector('#coin.heads').classList.remove("heads")
+          document.querySelector('#coin').classList.remove("heads")
           document.querySelector('#coin').classList.add("heads2")
           self.flipped = false
-        // console.log(document.querySelector('#coin.heads').style.height)
         }
       });
-
-      var time = Math.random() * 10
-      console.log('cost ' + time + ' seconds.')
-      setTimeout(function () {
-        self.flipped = true
-      }, time * 1000)
     },
 
     methods: {
+      tossCoin() {
+        let self = this
+        if (self.flipping == true) {
+          console.log("别着急嘛~")
+          return
+        } else{
+          console.log(self.randomSeed)
+          self.flipping = true
+          self.flipButton = "Flipping"
+        }
+        document.querySelector('#coin').classList.add("heads")
+
+
+        var time = Math.random() * 10
+        console.log('cost ' + time + ' seconds.')
+        setTimeout(function () {
+          self.flipped = true
+        }, time * 1000)
+      },
+
       processTopping: function (selection) {
         if (selection == 2) {
           this.showHead = false
@@ -153,6 +180,48 @@ body{
   color: white;
 }
 
+.plus {
+  position: absolute;
+  left: 75%;
+  top: 37.5%;
+}
+
+.random-seed{
+  position: absolute;
+  left: 90%;
+  top: 40%;
+  
+}
+
+.random-seed input {
+  border-bottom: 1px solid #E64F3B;
+  /* 去掉下划线 */
+  outline:none;
+  text-align: center;
+  color: #E64F3B;
+  font-family: "Lato";
+  font-size: 2em;
+  border-top:0px;
+  border-left:0px;
+  border-right:0px;
+  BACKGROUND-COLOR: transparent;
+  width: 400%;
+}
+
+.random-seed input::-webkit-input-placeholder{
+    color:#E64F3B;
+    font-size: 0.5em
+}
+.random-seed input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+    color:#E64F3B;
+}
+.random-seed input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+    color:#E64F3B;
+}
+.random-seed input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+    color:#E64F3B;
+}
+
 .box{
   position: relative;
   display: block;
@@ -182,7 +251,7 @@ position: absolute;
   width: 50%;
   height: 50%;
   top: 25%;
-  left: 25%;
+  left: 13%;
   z-index: 2;
   background: none;
 }
@@ -192,7 +261,7 @@ position: absolute;
   height: 40%;
   width: 45%;
   top: 30%;
-  left: 27.5%;
+  left: 17.5%;
   border-radius: 50%;
   background: #E64F3B;
   z-index: 2;
