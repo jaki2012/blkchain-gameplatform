@@ -1,65 +1,66 @@
 <template>
   <div id="cointossing">
-    <h1 class="title">Coin Tossing Guesser</h1>
-    <div class="box">
-      <div class="left-container">
-        <div class="option">{{topping}}</div>
-        <div class="option-container">
-          <transition name="bounce">
-            <div v-if="showHead" class="choice-preview">
-              <div>
-                <p class="preview-text"> Head </p>
-              </div>
-              
-            </div>
-          </transition>
-          <transition name="bounce">
-            <div v-if="showTail" class="choice-preview">
-              <div>
-                <p class="preview-text"> Tail </p>
-              </div>
-            </div>
-          </transition>
-          <div class="plus">
-            <p>+</p>
-          </div>
-          <div class="random-seed">
-            <input v-model="randomSeed" placeholder="your seed?">
-          </div>
+      <h1 class="title">Coin Tossing Guesser</h1>
+      <div class="box">
+        <div class="left-container">
+          <div class="option">{{topping}}</div>
+          <div class="option-container">
+            <transition name="bounce">
+              <div v-if="showHead" class="choice-preview">
+                <div>
+                  <p class="preview-text"> Head </p>
+                </div>
 
-          <transition name="bounce">
-            <div v-if="showMozWedge" class="moz-wedge">
+              </div>
+            </transition>
+            <transition name="bounce">
+              <div v-if="showTail" class="choice-preview">
+                <div>
+                  <p class="preview-text"> Tail </p>
+                </div>
+              </div>
+            </transition>
+            <div class="plus">
+              <p>+</p>
             </div>
-          </transition>
-          <transition name="bounce">
-            <div v-if="showPepOption" class="pep-option">
+            <div class="random-seed">
+              <input v-model="randomSeed" placeholder="your seed?">
             </div>
-          </transition>
+
+            <transition name="bounce">
+              <div v-if="showMozWedge" class="moz-wedge">
+              </div>
+            </transition>
+            <transition name="bounce">
+              <div v-if="showPepOption" class="pep-option">
+              </div>
+            </transition>
+          </div>
+          <div v-if="buttonsOn" @click="processTopping(1)" class="yes-button">{{yesButton}}</div>
+          <div v-if="buttonsOn" @click="processTopping(2)" class="no-button">{{noButton}}</div>
         </div>
-        <div v-if="buttonsOn" @click="processTopping(1)" class="yes-button">{{yesButton}}</div>
-        <div v-if="buttonsOn" @click="processTopping(2)" class="no-button">{{noButton}}</div>
-      </div>
-      <div class="right-container">
-        <div class="option">
-          <span id="white">{{totalPrice}}</span>
-        </div>
-        <div class="pizza-div" id="coin">
-          <div class="side-a"></div>
-          <div class="side-b"></div>
-        </div>
-        <!--<div class="pizza-div flip">
+        <div class="right-container">
+          <div class="option">
+            <span id="white">{{totalPrice}}</span>
+          </div>
+          <div class="pizza-div" id="coin">
+            <div class="side-a"></div>
+            <div class="side-b"></div>
+          </div>
+          <!--<div class="pizza-div flip">
           <div class="pizza">
           </div>
           <div class="pizza-back">
           </div>
         </div>-->
-        <div class="totalButton">
-          <div v-if="buttonsOn" @click="tossCoin()" class="flip-button">{{flipButton}}</div>
+          <div class="totalButton">
+            <div v-if="buttonsOn" @click="tossCoin()" class="flip-button">{{flipButton}}</div>
+          </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
+
 
 
 <script>
@@ -706,7 +707,6 @@ clip-path: polygon(100% 0, 0 0, 50% 100%);
   from { -webkit-transform: rotateY(0); -moz-transform: rotateY(0); transform: rotateY(0); }
   to { -webkit-transform: rotateY(1980deg); -moz-transform: rotateY(1980deg); transform: rotateY(1980deg); }
 }
-
 
 </style>
 

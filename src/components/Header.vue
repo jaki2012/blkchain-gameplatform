@@ -6,7 +6,7 @@
     <!-- Nav -->
       <nav id="nav">
         <ul>
-          <li class="current"><router-link to="/" rel="nofollow">首页</router-link></li>
+          <li class="homepage-li current"><router-link to="/" rel="nofollow">首页</router-link></li>
           <li class="gamelist-li">
             <router-link to="gamelist" rel="nofollow">游戏列表</router-link>
             <ul>

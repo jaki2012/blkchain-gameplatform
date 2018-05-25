@@ -55,6 +55,10 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
+  },
+  mounted(){
+    document.querySelector('#nav .current').classList.remove("current")
+    document.querySelector('.homepage-li').classList.add("current")
   }
 }
 </script>

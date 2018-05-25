@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/Login'
 import CoinTossing from '@/components/CoinTossing'
 import GameList from '@/components/GameList'
+import Game from '@/components/Game'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/gamelist',
       name: 'GameList',
       component: GameList
+    },
+    {
+      path: '/game',
+      name: 'Game',
+      component: Game
     }
   ]
 })
