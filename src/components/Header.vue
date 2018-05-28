@@ -2,7 +2,7 @@
   <div id="header-wrapper">
   <div id="header">
     <!-- Logo -->
-      <h1 class="logoh1"><a href="index.html">大济大利</a></h1>
+      <h1 class="logoh1"><router-link to="/" rel="nofollow">大济大利</router-link></h1>
     <!-- Nav -->
       <nav id="nav">
         <ul>
@@ -52,6 +52,7 @@ export default {
   mounted() {
 	  console.log('Header.vue mounted again')
 	  console.log(this.user)
+	  console.log(this.app)
   },
   methods:{
 	  ...mapActions([USER_SIGNOUT, "logout"]),

@@ -24,7 +24,7 @@
               <p>+</p>
             </div>
             <div class="random-seed">
-              <input v-model="randomSeed" placeholder="your seed?">
+              <input v-model="userSeed" placeholder="your seed?">
             </div>
 
             <transition name="bounce">
@@ -65,6 +65,7 @@
 
 <script>
   import { mapState } from 'vuex'
+  import { sha256 } from 'js-sha256'
   export default {
     data() {
       return {
@@ -89,43 +90,116 @@
         buttonsOn: true,
         count: 0,
         flipButton: "Flip It!",
-        randomSeed: null,
+        userSeed: null,
         flipping: false,
-        flipped: false
+        flipped: false,
+        serverSeedHash: null,
+        serverSeedTxid: null,
+        serverSeed: null,
+        // 服务器返回的最终结果
+        finalResult: null
       }
     },
     computed: mapState({ user: state => state.user}),
     mounted: function () {
       let self = this
-      console.log("fuck")
       console.log(self.user)
-      
-      
       self.$http.get(
         global.HOST + '/cointossing/newround?token=' + self.user.token
       ).then((res) => {
         console.log(res.body)
+        self.serverSeedHash = res.body.server_seed_hash
       })
 
       console.log("CoinTossing mounted.")
       document.querySelector('#coin').addEventListener('animationend', function () {
-        document.querySelector('#coin').classList.remove("heads2")
+        if (self.finalResult === 1) {
+            document.querySelector('#coin').classList.remove("heads2")
+          } else{
+            document.querySelector('#coin').classList.remove("tails")
+          }
         self.flipping = false
         self.flipButton = "Flip It!"
         console.log("animationend")
-      });
+        let bingo = false
+        if (self.showHead && self.finalResult === 1) {
+          bingo = true
+        } else if (self.showTail && self.finalResult === 0){
+          bingo = true
+        }
+        let bingoText = bingo? "恭喜你猜中了结果！": "很遗憾你没有猜中结果.."
+        let iconType = bingo? "success" : "error"
+        console.log(bingoText)
+        let content = '服务器随机数hash: <span style="color:red">' + self.serverSeedHash.substr(0, 10) + '</span></br>' +
+              '服务器随机数: <span style="color:red">' + self.serverSeed + '</span></br>' +
+              'sha256(' + self.serverSeed + ') == <span style="color:red">' + self.serverSeedHash.substr(0, 10) + '</span></br>' +
+              '你的随机数: <span style="color:red">' + self.userSeed + '</span></br>' +
+              '(' + self.userSeed + ' & ' + self.serverSeed + ') & 1 = ' + self.finalResult
+        var div = document.createElement('div')
+        div.innerHTML = content
+        // div.classList.add("sweet-alert")
+        swal({
+          title: bingoText,
+          content: {
+            element: div,
+            attributes: {
+              class: "sweet-alert"
+            }
+          },
+          icon: iconType,
+          buttons: {
+            confirm: {
+              text: "再玩一次",
+              value: "playagain",
+              visible: true,
+              className: "",
+              closeModal: true
+            },
+            cancel: {
+              text: "确认结果",
+              value: confirm,
+              visible: true,
+              className: "",
+              closeModal: true,
+            },
+          },
+          // timer: 5000,
+        }).then((value) => {
+          switch (value) {
+            case "playagain":
+              self.$http.get(
+                global.HOST + '/cointossing/newround?token=' + self.user.token
+              ).then((res) => {
+                console.log(res.body)
+                self.serverSeedHash = res.body.server_seed_hash
+              })
+
+              break;
+
+            case "confirm":
+              break;
+
+            default:
+              break;
+          };
+        });
+
+      })
       document.querySelector('#coin').addEventListener('animationiteration', function () {
         console.log("animationiteration plus one")
         self.count = self.count + 1;
         if (self.flipped == true) {
           console.log("regular animation stopped.")
           document.querySelector('#coin').classList.remove("heads")
-          document.querySelector('#coin').classList.add("heads2")
+          if (self.finalResult === 1) {
+            document.querySelector('#coin').classList.add("heads2")
+          } else{
+            document.querySelector('#coin').classList.add("tails")
+          }
           self.flipped = false
         }
       });
-    },
-
+      },
     methods: {
       tossCoin() {
         let self = this
@@ -133,21 +207,43 @@
           console.log("别着急嘛~")
           return
         } else{
-          console.log(self.randomSeed)
+          if (!self.userSeed){
+            alert("你还没有输入随机种子")
+            return
+          }
+          let choice = self.showHead ? 1:0
+          self.$http.get(
+            global.HOST + "/cointossing/begin?userseed="+self.userSeed
+              +"&choice=" + choice + "&token=" + self.user.token
+          ).then((res) => {
+            // 添加出错提示
+            console.log(res.body.server_seed)
+            self.serverSeed = res.body.server_seed
+            let arr = self.toBytesInt32(Number(res.body.server_seed))
+            let ret = sha256(arr)
+            console.log("===========")
+            console.log(ret)
+            console.log(self.serverSeedHash)
+            if (ret === self.serverSeedHash) {
+              let end = (res.body.server_seed ^ self.userSeed) & 1
+              console.log("end is " + end)
+              self.finalResult = end
+            } else {
+              // 错误提示 hash不一致
+            }
+
+            // 停止转动
+            self.flipped = true;
+            
+          })
+          
           self.flipping = true
           self.flipButton = "Flipping"
         }
         document.querySelector('#coin').classList.add("heads")
-
-
-        var time = Math.random() * 10
-        console.log('cost ' + time + ' seconds.')
-        setTimeout(function () {
-          self.flipped = true
-        }, time * 1000)
       },
-
       processTopping: function (selection) {
+
         if (selection == 2) {
           this.showHead = false
           this.showTail = true
@@ -155,6 +251,14 @@
           this.showHead = true
           this.showTail = false
         }
+      },
+      toBytesInt32(num) {
+        // an int32 takes 4 bytes
+        let arr = new ArrayBuffer(4)
+        let view = new DataView(arr)
+        // byteOffset = 0, littleendian = false
+        view.setUint32(0, num, false)
+        return arr
       }
     }
 
@@ -684,17 +788,24 @@ clip-path: polygon(100% 0, 0 0, 50% 100%);
 }
 
 #coin.heads {
-  -webkit-animation: flipHeads 3s ease-out forwards;
-  -moz-animation: flipHeads 3s ease-out forwards;
-    -o-animation: flipHeads 3s ease-out forwards;
+  -webkit-animation: flipHeads 3s ease-out infinite;
+  -moz-animation: flipHeads 3s ease-out infinite;
+    -o-animation: flipHeads 3s ease-out infinite;
        animation: flipHeads 3s linear infinite;
 }
 
 #coin.heads2 {
-  -webkit-animation: flipHeads 3s ease-out forwards;
-  -moz-animation: flipHeads 3s ease-out forwards;
-    -o-animation: flipHeads 3s ease-out forwards;
+  -webkit-animation: flipHeads2 3s ease-out forwards;
+  -moz-animation: flipHeads2 3s ease-out forwards;
+    -o-animation: flipHeads2 3s ease-out forwards;
        animation: flipHeads2 3s ease-out forwards;
+}
+
+#coin.tails {
+  -webkit-animation: flipTails 3s ease-out forwards;
+  -moz-animation: flipTails 3s ease-out forwards;
+    -o-animation: flipTails 3s ease-out forwards;
+       animation: flipTails 3s ease-out forwards;
 }
 
 @keyframes flipIt {
@@ -715,6 +826,7 @@ clip-path: polygon(100% 0, 0 0, 50% 100%);
   from { -webkit-transform: rotateY(0); -moz-transform: rotateY(0); transform: rotateY(0); }
   to { -webkit-transform: rotateY(1800deg); -moz-transform: rotateY(1800deg); transform: rotateY(1800deg); }
 }
+
 @keyframes flipTails {
   from { -webkit-transform: rotateY(0); -moz-transform: rotateY(0); transform: rotateY(0); }
   to { -webkit-transform: rotateY(1980deg); -moz-transform: rotateY(1980deg); transform: rotateY(1980deg); }
