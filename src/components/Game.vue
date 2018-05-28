@@ -24,9 +24,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import CoinTossing from './CoinTossing'
 export default {
     name: "Game",
+    computed: mapState({ user: state => state.user}),
     components: {
         "cointossing": CoinTossing
     },mounted() {

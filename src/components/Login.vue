@@ -6,12 +6,12 @@
       <div class="form sign-in">
         <h2>欢迎回来,</h2>
         <label>
-          <span>电子邮件</span>
-          <input type="email" />
+          <span>用户名</span>
+          <input v-model="loginUserName" type="text" />
         </label>
         <label>
           <span>登录密码</span>
-          <input type="password" />
+          <input v-model="loginPassword" type="password" />
         </label>
         <p class="forgot-pass">忘记密码?</p>
         <!--
@@ -21,7 +21,7 @@
         </a>
         -->
 
-        <button type="button" id="btnActivation" class="btn btn--activate submit">
+        <button type="button" @click="Login()" id="btnActivation" class="btn btn--activate submit">
           <span class="btn__icon"></span>
            <span class="btn__text" data-wait="正在登录" data-after="登录成功">开始登录</span>
         </button>
@@ -49,7 +49,7 @@
           <h2>是时候开始你的探索了,</h2>
           <label>
             <span>用户昵称</span>
-            <input type="text" />
+            <input v-model="registerName" type="text" />
           </label>
           <label>
             <span>邮件</span>
@@ -57,10 +57,10 @@
           </label>
           <label>
             <span>登录密码</span>
-            <input type="password" />
+            <input v-model="registerPassword" type="password" />
           </label>
-
-          <button type="button" id="btnActivation2" class="btn btn--activate submit">
+          <!-- 绑click的元素要对-->
+          <button type="button" @click="Register()" id="btnActivation2" class="btn btn--activate submit">
             <span class="btn__icon"></span>
             <span class="btn__text" data-wait="正在注册" data-after="注册成功">开始注册</span>
           </button>
@@ -81,9 +81,21 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import { USER_SIGNIN } from '../vuex/store/user'
 export default {
   name: 'Login',
+  data() {
+    return {
+      loginUserName: null,
+      loginPassword: null,
+      registerName: null,
+      registerPassword: null,
+      userdata: ''
+    }
+  },
   mounted: function(){
+    console.log(this.$store)
     document.querySelector('.img__btn').addEventListener('click', function () {
       document.querySelector('.cont').classList.toggle('s--signup');
     });
@@ -96,9 +108,9 @@ export default {
         if (!$('#btnActivation').hasClass(('btn--activated'))) {
           $('#btnActivation').removeClass('btn--activate');
           $('#btnActivation').addClass('btn--waiting');
-          setTimeout(function () {
-            removeWaiting();
-          }, 3000);
+          // setTimeout(function () {
+          //   removeWaiting();
+          // }, 3000);
         }
       });
       // 注册按钮部分
@@ -106,9 +118,9 @@ export default {
         if (!$('#btnActivation2').hasClass(('btn--activated'))) {
           $('#btnActivation2').removeClass('btn--activate');
           $('#btnActivation2').addClass('btn--waiting');
-          setTimeout(function () {
-            removeWaiting2();
-          }, 3000);
+          // setTimeout(function () {
+          //   removeWaiting2();
+          // }, 3000);
         }
       });
 
@@ -125,6 +137,47 @@ export default {
       $('#btnActivation2').addClass('btn--activated');
   }
 
+  },
+  methods: {
+    ...mapActions([USER_SIGNIN,"enterLoginPage","leaveLoginPage","login"]),
+    Register() {
+      console.log("registering")
+      this.$http.get(
+        global.HOST + '/reg?username=' + this.registerName + '&password=' + this.loginPassword,
+        // {
+        //   username: this.registerName,
+        //   password: this.registerPassword
+        // }
+      ).then((res) => {
+        console.log(res)
+        $('#btnActivation2').removeClass('btn--waiting');
+        $('#btnActivation2').addClass('btn--activated');
+      })
+    },
+    Login() {
+      // hold the vue context
+      let self = this
+      this.$http.get(
+        global.HOST + '/login?username=' + this.loginUserName + '&password=' + this.loginPassword,
+      ).then((res => {
+        console.log(res.body)
+        // login succesfully
+        if(res.body.error == 0) {
+          $('#btnActivation').removeClass('btn--waiting');
+          $('#btnActivation').addClass('btn--activated');
+          self.userdata = res.body
+          self.JumpToHomepage()
+          self.login()
+        } else {
+          //login failed
+        }
+        
+      }))
+    },
+    JumpToHomepage(){
+      this.USER_SIGNIN(this.userdata)
+      this.$router.replace({path: '/'})
+    }
   }
 }
 </script>

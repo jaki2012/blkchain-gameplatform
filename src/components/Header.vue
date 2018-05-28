@@ -28,7 +28,14 @@
           </li>
           <li><a href="left-sidebar.html">游戏介绍</a></li>
           <li><a href="right-sidebar.html">关于我们</a></li>
-          <li class="login-li"><router-link to="login" rel="nofollow">登录/注册</router-link></li>
+		  <!-- 用v-show提前加载来防止后面加载dropon.js不生效 -->
+          <li v-show="!app.userLoggedIn" class="login-li"><router-link to="login" rel="nofollow">登录/注册</router-link></li>
+		  <li v-show="app.userLoggedIn">{{user.username}}
+			<ul>
+			  <li class="dropdown-info"><a>个人信息</a></li>
+			  <li class="dropdown-info"><a href="" @click="logout2">退出登录</a></li>
+			</ul>
+		  </li>
         </ul>
       </nav>
   </div>
@@ -36,8 +43,24 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+import { USER_SIGNOUT} from '../vuex/store/user'
+
 export default {
-  name: 'Header'
+  name: 'Header',
+  computed: mapState({ user: state => state.user, app: state => state.app}),
+  mounted() {
+	  console.log('Header.vue mounted again')
+	  console.log(this.user)
+  },
+  methods:{
+	  ...mapActions([USER_SIGNOUT, "logout"]),
+	  logout2() {
+		  this.USER_SIGNOUT()
+		  this.logout()
+		  this.$router.replace({path:'/'})
+ 	  }
+  }
 }
 </script>
 
@@ -47,7 +70,7 @@ export default {
       margin: 0;
       padding: 0;
       border: 0;
-      font-size: 100%;
+      font-size: 17.333px;
       font: inherit;
       vertical-align: baseline;
   }
@@ -67,7 +90,7 @@ export default {
 		color: inherit;
 		text-decoration: none;
 	}
-
+  
   /* Desktop */
   @media screen and (min-width: 737px) {
 
@@ -273,12 +296,15 @@ export default {
 					}
 
 			.dropotron {
+				font-family: "Source Sans Pro";
 				border-radius: 5px;
 				background-color: #252122;
 				background-color: rgba(34, 30, 31, 0.98);
 				padding: 1.25em 1.5em 1.25em 1.5em;
 				font-style: italic;
-				min-width: 13em;
+				min-width: 5em;
+				line-height: 2em;
+				font-size: 17.33px!important;
 				box-shadow: 0px 8px 15px 0px rgba(0, 0, 0, 0.5);
 				text-align: left;
 				margin-top: -1.25em;

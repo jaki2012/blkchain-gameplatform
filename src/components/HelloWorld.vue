@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+import { USER_SIGNOUT} from '../vuex/store/user'
 export default {
   name: 'HelloWorld',
   data () {
@@ -56,7 +58,10 @@ export default {
       msg: 'Welcome to Your Vue.js App'
     }
   },
+  computed: mapState({ user: state => state.user}),
   mounted(){
+    console.log("Helloworld.vue mounted again")
+    console.log(this.user)
     document.querySelector('#nav .current').classList.remove("current")
     document.querySelector('.homepage-li').classList.add("current")
   }

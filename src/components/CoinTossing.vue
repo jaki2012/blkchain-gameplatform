@@ -64,6 +64,7 @@
 
 
 <script>
+  import { mapState } from 'vuex'
   export default {
     data() {
       return {
@@ -93,8 +94,19 @@
         flipped: false
       }
     },
+    computed: mapState({ user: state => state.user}),
     mounted: function () {
       let self = this
+      console.log("fuck")
+      console.log(self.user)
+      
+      
+      self.$http.get(
+        global.HOST + '/cointossing/newround?token=' + self.user.token
+      ).then((res) => {
+        console.log(res.body)
+      })
+
       console.log("CoinTossing mounted.")
       document.querySelector('#coin').addEventListener('animationend', function () {
         document.querySelector('#coin').classList.remove("heads2")
