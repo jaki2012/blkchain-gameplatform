@@ -1,5 +1,5 @@
 <template>
-  <div class="root">
+  <div id="pagewrap" class="root">
     <main class="cd-main-content">
       <div class="center">
         <!-- <h1>Ink Transition Effect</h1> -->
@@ -8,7 +8,7 @@
     </main>
     <!-- .cd-main-content -->
 
-    <div class="cd-modal">
+    <div class="cd-modal container">
         <cointossing class="cointossing"></cointossing>
         <!-- .modal-content -->
         <a href="#0" class="modal-close">Close</a>

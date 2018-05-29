@@ -47,17 +47,21 @@
             <div class="side-a"></div>
             <div class="side-b"></div>
           </div>
-          <!--<div class="pizza-div flip">
-          <div class="pizza">
-          </div>
-          <div class="pizza-back">
-          </div>
-        </div>-->
+
           <div class="totalButton">
             <div v-if="buttonsOn" @click="tossCoin()" class="flip-button">{{flipButton}}</div>
           </div>
         </div>
       </div>
+
+      <div id="loader" class="pageload-overlay" data-opening="M 40 -21.875 C 11.356078 -21.875 -11.875 1.3560784 -11.875 30 C -11.875 58.643922 11.356078 81.875 40 81.875 C 68.643922 81.875 91.875 58.643922 91.875 30 C 91.875 1.3560784 68.643922 -21.875 40 -21.875 Z">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice">
+          <path d="M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z" />
+        </svg>
+      </div>
+      <!-- /pageload-overlay -->
+
+
   </div>
 </template>
 
@@ -102,6 +106,40 @@
     },
     computed: mapState({ user: state => state.user}),
     mounted: function () {
+      
+
+        var pageWrap = document.getElementById('pagewrap'),
+          pages = [].slice.call(pageWrap.querySelectorAll('div.container')),
+          currentPage = 0,
+          triggerLoading = [].slice.call(pageWrap.querySelectorAll('.yes-button')),
+          loader = new SVGLoader(document.getElementById('loader'), {
+            speedIn: 300,
+            easingIn: mina.easeinout
+          });
+
+        function init() {
+          triggerLoading.forEach(function (trigger) {
+            trigger.addEventListener('click', function (ev) {
+              ev.preventDefault();
+              loader.show();
+              // after some time hide loader
+              setTimeout(function () {
+                loader.hide();
+
+                classie.removeClass(pages[currentPage], 'show');
+                // update..
+                currentPage = currentPage ? 0 : 1;
+                classie.addClass(pages[currentPage], 'show');
+
+              }, 2000);
+            });
+          });
+        }
+        init();
+
+
+
+
       let self = this
       console.log(self.user)
       self.$http.get(
@@ -128,7 +166,7 @@
           bingo = true
         }
         let bingoText = bingo? "恭喜你猜中了结果！": "很遗憾你没有猜中结果.."
-        let iconType = bingo? "success" : "error"
+        let iconType = bingo? "success" : "info"
         console.log(bingoText)
         let content = '服务器随机数hash: <span style="color:red">' + self.serverSeedHash.substr(0, 10) + '</span></br>' +
               '服务器随机数: <span style="color:red">' + self.serverSeed + '</span></br>' +
@@ -140,6 +178,7 @@
         // div.classList.add("sweet-alert")
         swal({
           title: bingoText,
+          allowOutsideClick: false,
           content: {
             element: div,
             attributes: {
@@ -148,19 +187,19 @@
           },
           icon: iconType,
           buttons: {
-            confirm: {
+            playagain: {
               text: "再玩一次",
               value: "playagain",
               visible: true,
               className: "",
               closeModal: true
             },
-            cancel: {
+            confirm: {
               text: "确认结果",
-              value: confirm,
+              value: "confirm",
               visible: true,
               className: "",
-              closeModal: true,
+              closeModal: false,
             },
           },
           // timer: 5000,
@@ -173,12 +212,31 @@
                 console.log(res.body)
                 self.serverSeedHash = res.body.server_seed_hash
               })
-
               break;
-
+            // 判定对最后的结果是否已经记录完成， 这个是显示完判定流程界面后，不断向后台轮询(1-2s)是否已经记录完成
             case "confirm":
-              break;
+              let finished = false
+              // 500ms发送一个
+              let intervalCtx = setInterval(function() {
+                self.$http.get(
+                  global.HOST + '/cointossing/isend?token=' + self.user.token
+                ).then((res) => {
+                  console.log(res.body)
+                  finished = res.body.finish
+                })
+              }, 500)
+              
+              // 轮询检查是否记录结果完成
+              let stopIntervalCtx = setInterval(function() {
+                if (finished === true){
+                  clearInterval(intervalCtx)
+                  clearInterval(stopIntervalCtx)
+                  swal.stopLoading()
+                  swal.close();
+                } 
+              }, 500)
 
+              break;
             default:
               break;
           };
@@ -269,6 +327,7 @@
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Lato:400,700');
+@import url('../assets/loading/css/component.css');
 
 body{
   background: #E86152;
