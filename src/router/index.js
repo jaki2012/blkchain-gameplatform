@@ -13,7 +13,8 @@ export default new Router({
     {
       path: '/',
       name: 'HelloWorld',
-      component: HelloWorld
+      component: HelloWorld,
+      meta: { auth: false }
     },
     {
       path: '/coin_tossing',
@@ -23,17 +24,19 @@ export default new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: { auth: false }
     },
     {
       path: '/gamelist',
       name: 'GameList',
-      component: GameList
+      component: GameList,
+      meta: { auth: false }
     },
     {
-      path: '/game',
+      path: '/game/:gamename',
       name: 'Game',
       component: Game
-    }
+    },
   ]
 })

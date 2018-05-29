@@ -9,7 +9,8 @@
     <!-- .cd-main-content -->
 
     <div class="cd-modal container">
-        <cointossing class="cointossing"></cointossing>
+        <!--组件保留在内存-->
+        <component v-bind:is="currentView" keep-alive></component>  
         <!-- .modal-content -->
         <a href="#0" class="modal-close">Close</a>
     </div>
@@ -28,6 +29,11 @@ import { mapState } from 'vuex'
 import CoinTossing from './CoinTossing'
 export default {
     name: "Game",
+    data() {
+      return {
+        'currentView': this.$route.params.gamename
+      }
+    },
     computed: mapState({ user: state => state.user}),
     components: {
         "cointossing": CoinTossing

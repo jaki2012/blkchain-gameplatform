@@ -15,7 +15,7 @@
       <main>
         <div class='items'>
           <div class='item'>
-          <router-link to="game" rel="nofollow">
+          <router-link to="game/cointossing" rel="nofollow">
             <svg preserveAspectRatio='xMidYMid slice' viewBox='0 0 300 200'>
               <defs>
                 <clipPath id='clip-0'>

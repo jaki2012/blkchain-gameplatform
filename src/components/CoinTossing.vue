@@ -116,11 +116,7 @@
 
       console.log("CoinTossing mounted.")
       document.querySelector('#coin').addEventListener('animationend', function () {
-        if (self.finalResult === 1) {
-            document.querySelector('#coin').classList.remove("heads2")
-          } else{
-            document.querySelector('#coin').classList.remove("tails")
-          }
+        
         self.flipping = false
         self.flipButton = "Flip It!"
         console.log("animationend")
@@ -161,7 +157,7 @@
               closeModal: false
             },
             confirm: {
-              text: "保存并返回",
+              text: "保存返回",
               value: "confirm",
               visible: true,
               className: "",
@@ -170,6 +166,12 @@
           },
           // timer: 5000,
         }).then((value) => {
+          
+          if (self.finalResult === 1) {
+            document.querySelector('#coin').classList.remove("heads2")
+          } else{
+            document.querySelector('#coin').classList.remove("tails")
+          }
           
           switch (value) {
             case "playagain":

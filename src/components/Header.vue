@@ -30,7 +30,7 @@
           <li><a href="right-sidebar.html">关于我们</a></li>
 		  <!-- 用v-show提前加载来防止后面加载dropon.js不生效 -->
           <li v-show="!app.userLoggedIn" class="login-li"><router-link to="login" rel="nofollow">登录/注册</router-link></li>
-		  <li v-show="app.userLoggedIn">{{user.username}}
+		  <li v-show="app.userLoggedIn" >{{user.username}}
 			<ul>
 			  <li class="dropdown-info"><a>个人信息</a></li>
 			  <li class="dropdown-info"><a href="" @click="logout2">退出登录</a></li>
@@ -51,7 +51,6 @@ export default {
   computed: mapState({ user: state => state.user, app: state => state.app}),
   mounted() {
 	  console.log('Header.vue mounted again')
-	  console.log(this.user)
 	  console.log(this.app)
   },
   methods:{
@@ -59,6 +58,7 @@ export default {
 	  logout2() {
 		  this.USER_SIGNOUT()
 		  this.logout()
+		  swal("您已成功退出登录！")
 		  this.$router.replace({path:'/'})
  	  }
   }

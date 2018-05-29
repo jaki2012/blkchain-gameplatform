@@ -166,8 +166,10 @@ export default {
           $('#btnActivation').removeClass('btn--waiting');
           $('#btnActivation').addClass('btn--activated');
           self.userdata = res.body
-          self.JumpToHomepage()
           self.login()
+          // 必须先login再跳转
+          self.JumpToHomepage()
+          
         } else {
           //login failed
         }
@@ -175,8 +177,12 @@ export default {
       }))
     },
     JumpToHomepage(){
+      let self = this
       this.USER_SIGNIN(this.userdata)
-      this.$router.replace({path: '/'})
+      setTimeout(function(){
+        self.$router.replace({path: '/'})
+      }, 1000)
+      
     }
   }
 }

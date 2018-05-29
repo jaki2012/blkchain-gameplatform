@@ -10,6 +10,20 @@ Vue.use(VueResource)
 
 Vue.config.productionTip = false
 
+router.beforeEach(({meta, path}, from, next) => {
+
+  var { auth = true } = meta
+
+  // 获取当前登录状态
+  var isLogin = (store.state.app.userLoggedIn === true)
+
+  if (auth && !isLogin && path !== '/login'){
+    console.log("enter")
+    return next({ path: '/login'})
+  }
+  next()
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -4,11 +4,20 @@ export default {
     state: {
         loginPage: false,
         firstShow: false,
-        userLoggedIn: false
+        userLoggedIn: JSON.parse(localStorage.getItem('userLoggedIn')) || false,
     },
     mutations: {
-        LOGIN: state => state.userLoggedIn = true,
-        LOGOUT: state => state.userLoggedIn = false,
+        LOGIN: state => {
+          state.userLoggedIn = true
+          console.log('setting...')
+          localStorage.setItem('userLoggedIn', true)
+        },
+        LOGOUT: state => {
+            // 这里要写对啊
+          state.userLoggedIn = false
+          localStorage.setItem('userLoggedIn', false)
+        },
+
         LEAVE_LOGINPAGE: state => state.loginPage = false,
         ENTER_LOGINPAGE: state => state.loginPage = true,
         SHOW_FIRST: state => state.firstShow = true,

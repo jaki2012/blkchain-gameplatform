@@ -60,8 +60,6 @@ export default {
   },
   computed: mapState({ user: state => state.user}),
   mounted(){
-    console.log("Helloworld.vue mounted again")
-    console.log(this.user)
     document.querySelector('#nav .current').classList.remove("current")
     document.querySelector('.homepage-li').classList.add("current")
   }
