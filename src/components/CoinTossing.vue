@@ -106,47 +106,12 @@
     },
     computed: mapState({ user: state => state.user}),
     mounted: function () {
-      
-
-        var pageWrap = document.getElementById('pagewrap'),
-          pages = [].slice.call(pageWrap.querySelectorAll('div.container')),
-          currentPage = 0,
-          triggerLoading = [].slice.call(pageWrap.querySelectorAll('.yes-button')),
-          loader = new SVGLoader(document.getElementById('loader'), {
-            speedIn: 300,
-            easingIn: mina.easeinout
-          });
-
-        function init() {
-          triggerLoading.forEach(function (trigger) {
-            trigger.addEventListener('click', function (ev) {
-              ev.preventDefault();
-              loader.show();
-              // after some time hide loader
-              setTimeout(function () {
-                loader.hide();
-
-                classie.removeClass(pages[currentPage], 'show');
-                // update..
-                currentPage = currentPage ? 0 : 1;
-                classie.addClass(pages[currentPage], 'show');
-
-              }, 2000);
-            });
-          });
-        }
-        init();
-
-
-
-
+      // 保留vue自身的context
       let self = this
-      console.log(self.user)
-      self.$http.get(
-        global.HOST + '/cointossing/newround?token=' + self.user.token
-      ).then((res) => {
-        console.log(res.body)
-        self.serverSeedHash = res.body.server_seed_hash
+      
+      // 点击开始游戏的时候自动加载
+      document.querySelector('#startgame').addEventListener('click', function(){
+        self.beginNewRound();
       })
 
       console.log("CoinTossing mounted.")
@@ -165,12 +130,12 @@
         } else if (self.showTail && self.finalResult === 0){
           bingo = true
         }
-        let bingoText = bingo? "恭喜你猜中了结果！": "很遗憾你没有猜中结果.."
+        let bingoText = bingo? "恭喜您猜中了结果！": "很遗憾您没有猜中结果.."
         let iconType = bingo? "success" : "info"
         console.log(bingoText)
-        let content = '服务器随机数hash: <span style="color:red">' + self.serverSeedHash.substr(0, 10) + '</span></br>' +
+        let content = '服务器随机数hash: <span style="color:red">' + self.serverSeedHash.substr(0, 12) + '</span></br>' +
               '服务器随机数: <span style="color:red">' + self.serverSeed + '</span></br>' +
-              'sha256(' + self.serverSeed + ') == <span style="color:red">' + self.serverSeedHash.substr(0, 10) + '</span></br>' +
+              'sha256(' + self.serverSeed + ') == <span style="color:red">' + self.serverSeedHash.substr(0, 12) + '</span></br>' +
               '你的随机数: <span style="color:red">' + self.userSeed + '</span></br>' +
               '(' + self.userSeed + ' & ' + self.serverSeed + ') & 1 = ' + self.finalResult
         var div = document.createElement('div')
@@ -178,7 +143,8 @@
         // div.classList.add("sweet-alert")
         swal({
           title: bingoText,
-          allowOutsideClick: false,
+          // 多到官网看最新的api文档
+          closeOnClickOutside: false,
           content: {
             element: div,
             attributes: {
@@ -192,10 +158,10 @@
               value: "playagain",
               visible: true,
               className: "",
-              closeModal: true
+              closeModal: false
             },
             confirm: {
-              text: "确认结果",
+              text: "保存并返回",
               value: "confirm",
               visible: true,
               className: "",
@@ -204,38 +170,14 @@
           },
           // timer: 5000,
         }).then((value) => {
+          
           switch (value) {
             case "playagain":
-              self.$http.get(
-                global.HOST + '/cointossing/newround?token=' + self.user.token
-              ).then((res) => {
-                console.log(res.body)
-                self.serverSeedHash = res.body.server_seed_hash
-              })
-              break;
+              self.saveResult(1)
+              break
             // 判定对最后的结果是否已经记录完成， 这个是显示完判定流程界面后，不断向后台轮询(1-2s)是否已经记录完成
             case "confirm":
-              let finished = false
-              // 500ms发送一个
-              let intervalCtx = setInterval(function() {
-                self.$http.get(
-                  global.HOST + '/cointossing/isend?token=' + self.user.token
-                ).then((res) => {
-                  console.log(res.body)
-                  finished = res.body.finish
-                })
-              }, 500)
-              
-              // 轮询检查是否记录结果完成
-              let stopIntervalCtx = setInterval(function() {
-                if (finished === true){
-                  clearInterval(intervalCtx)
-                  clearInterval(stopIntervalCtx)
-                  swal.stopLoading()
-                  swal.close();
-                } 
-              }, 500)
-
+              self.saveResult(0)
               break;
             default:
               break;
@@ -268,6 +210,13 @@
           if (!self.userSeed){
             alert("你还没有输入随机种子")
             return
+          } else {
+            　var re = /(^[1-9]\d*$)/;
+             console.log(re.test(self.userSeed))
+             if(!re.test(self.userSeed)){
+               swal("请输入正确的正整数",{icon: "warning"})
+               return
+             }
           }
           let choice = self.showHead ? 1:0
           self.$http.get(
@@ -301,7 +250,6 @@
         document.querySelector('#coin').classList.add("heads")
       },
       processTopping: function (selection) {
-
         if (selection == 2) {
           this.showHead = false
           this.showTail = true
@@ -317,9 +265,61 @@
         // byteOffset = 0, littleendian = false
         view.setUint32(0, num, false)
         return arr
+      },
+      beginNewRound() {
+        let self = this
+        // 清空userSeed
+        self.userSeed = null
+        var loader = new SVGLoader(document.getElementById('loader'), {
+          speedIn: 300,
+          easingIn: mina.easeinout
+        });
+        loader.show();
+        console.log(self.user)
+        self.$http.get(
+          global.HOST + '/cointossing/newround?token=' + self.user.token
+        ).then((res) => {
+          console.log(res.body)
+          self.serverSeedHash = res.body.server_seed_hash
+          loader.hide()
+        })
+      },
+      // 轮询保存结果
+      saveResult(num) {
+        let self = this
+        let finished = false
+        // 500ms发送一个
+        let intervalCtx = setInterval(function () {
+          self.$http.get(
+            global.HOST + '/cointossing/isend?token=' + self.user.token
+          ).then((res) => {
+            console.log(res.body)
+            finished = res.body.finish
+          })
+        }, 500)
+
+        // 轮询检查是否记录结果完成，400ms设置小于500ms减少请求开销
+        let stopIntervalCtx = setInterval(function () {
+          if (finished === true) {
+            clearInterval(intervalCtx)
+            clearInterval(stopIntervalCtx)
+            swal.stopLoading()
+            swal.close();
+            if (num === 1) {
+              self.beginNewRound()
+            } else {
+              swal({
+                text: "您的结果已保存成功！",
+                icon: "success",
+                buttons: "我知道了",
+              }).then((value) => {
+                self.$router.replace({path:'/gamelist'})
+              });
+            }
+          }
+        }, 400)
       }
     }
-
   } 
   </script>
 
@@ -428,7 +428,7 @@ position: absolute;
   height: 50%;
   top: 25%;
   left: 13%;
-  z-index: 2;
+  /*z-index: 2;*/
   background: none;
 }
 
@@ -440,7 +440,7 @@ position: absolute;
   left: 17.5%;
   border-radius: 50%;
   background: #E64F3B;
-  z-index: 2;
+  /*z-index: 2;*/
   /* 设置子DIV居中 */
   display:flex;
   justify-content:center;

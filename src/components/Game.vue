@@ -3,7 +3,7 @@
     <main class="cd-main-content">
       <div class="center">
         <!-- <h1>Ink Transition Effect</h1> -->
-        <a href="#0" class="cd-btn cd-modal-trigger">开始游戏</a>
+        <a href="#0" id="startgame" class="cd-btn cd-modal-trigger">开始游戏</a>
       </div>
     </main>
     <!-- .cd-main-content -->
