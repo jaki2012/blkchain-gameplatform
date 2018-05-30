@@ -155,6 +155,11 @@ span.year {
   /* Mobile */
 
     @media screen and (max-width: 736px) {
+      
+      .circle img {
+        width: 115px;
+      }
+
       .container1 {
         width: 96%;
       }

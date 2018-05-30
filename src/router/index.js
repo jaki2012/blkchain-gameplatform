@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/Login'
+import Logout from '@/components/Logout'
 import CoinTossing from '@/components/CoinTossing'
 import GameList from '@/components/GameList'
 import Game from '@/components/Game'
@@ -50,6 +51,12 @@ export default new Router({
       path: '/aboutus',
       name: 'AboutUs',
       component: AboutUs,
+      meta: { auth: false }
+    },
+    {
+      path: '/logout',
+      name: 'Logout',
+      component: Logout,
       meta: { auth: false }
     }
   ]

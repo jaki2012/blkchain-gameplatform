@@ -10,6 +10,8 @@
 			$a = $this.find('a'),
 			b = [];
 
+		var listlen = $this.find('a').length
+		var index = 0
 		$a.each(function() {
 
 			var	$this = $(this),
@@ -17,16 +19,53 @@
 				href = $this.attr('href'),
 				target = $this.attr('target');
 
-			b.push(
-				'<a ' +
-					'class="link depth-' + indent + '"' +
-					( (typeof target !== 'undefined' && target != '') ? ' target="' + target + '"' : '') +
-					( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') +
-				'>' +
-					'<span class="indent-' + indent + '"></span>' +
-					$this.text() +
-				'</a>'
-			);
+			if(index < 14){
+				b.push(
+					'<a ' +
+						'class="link depth-' + indent + '"' +
+						( (typeof target !== 'undefined' && target != '') ? ' target="' + target + '"' : '') +
+						( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') +
+					'>' +
+						'<span class="indent-' + indent + '"></span>' +
+						$this.text() +
+					'</a>'
+				);
+			} else if (index > 17){ //logout
+				b.push(
+					'<a ' +
+						'class="mobile-unlogged link depth-' + indent + '"' +
+						( (typeof target !== 'undefined' && target != '') ? ' target="' + target + '"' : '') +
+						( !(typeof href !== 'undefined' && href != '') ? ' href="' + '#/logout' + '"' : '') +
+					'>' +
+						'<span class="indent-' + indent + '"></span>' +
+						$this.text() +
+					'</a>'
+				);
+			} else if (index > 14){
+				b.push(
+					'<a ' +
+						'class="mobile-unlogged link depth-' + indent + '"' +
+						( (typeof target !== 'undefined' && target != '') ? ' target="' + target + '"' : '') +
+						( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') +
+					'>' +
+						'<span class="indent-' + indent + '"></span>' +
+						$this.text() +
+					'</a>'
+				);
+			} else { //index == 14
+				b.push(
+					'<a ' +
+						'class="mobile-logged link depth-' + indent + '"' +
+						( (typeof target !== 'undefined' && target != '') ? ' target="' + target + '"' : '') +
+						( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') +
+					'>' +
+						'<span class="indent-' + indent + '"></span>' +
+						$this.text() +
+					'</a>'
+				);
+			}
+			
+			index = index + 1
 
 		});
 

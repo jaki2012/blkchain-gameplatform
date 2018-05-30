@@ -62,7 +62,7 @@ export default {
 	  logout2() {
 		  this.USER_SIGNOUT()
 		  this.logout()
-		  swal("您已成功退出登录！")
+		  swal("您已成功退出登录！", "","success")
 		  this.$router.replace({path:'/'})
  	  },
 	  showDescription() {
