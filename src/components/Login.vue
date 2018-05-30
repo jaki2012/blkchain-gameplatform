@@ -59,7 +59,7 @@
             <span class="btn__text" data-wait="正在注册" data-after="注册成功">开始注册</span>
           </button>
           <button type="button" class="fb-btn">使用
-            <span>微信</span> 注册
+            <i class="fa fa-wechat wechat-icon"></i><span>微信</span> 注册
           </button>
         </div>
       </div>
