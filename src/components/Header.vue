@@ -2,7 +2,8 @@
   <div id="header-wrapper">
   <div id="header">
     <!-- Logo -->
-      <h1 class="logoh1"><router-link to="/" rel="nofollow">大济大利</router-link></h1>
+	  <img src="../assets/dajidali_logo2.png"></img>
+      <h1 class="logoh1" @click="showDescription()" > <router-link to="/" rel="nofollow">大济大利</router-link></h1>
     <!-- Nav -->
       <nav id="nav">
         <ul>
@@ -26,13 +27,15 @@
               <li><a href="#">Veroeros feugiat</a></li>
             </ul>
           </li>
-          <li><a href="left-sidebar.html">游戏介绍</a></li>
-          <li><a href="right-sidebar.html">关于我们</a></li>
+          <li><a href="#">游戏介绍</a></li>
+          <li><router-link to="/aboutus" rel="nofollow">关于我们</router-link></li>
 		  <!-- 用v-show提前加载来防止后面加载dropon.js不生效 -->
           <li v-show="!app.userLoggedIn" class="login-li"><router-link to="login" rel="nofollow">登录/注册</router-link></li>
-		  <li v-show="app.userLoggedIn" >{{user.username}}
+		  <!-- 查看css可知是-a-->
+		  <li v-show="app.userLoggedIn" class="selfinfo-li" ><a href="#">{{user.username}}</a>
 			<ul>
-			  <li class="dropdown-info"><a>个人信息</a></li>
+			  <li class="dropdown-info"><a href="#">个人信息</a></li>
+			  <li class="dropdown-info"><router-link to="/historyinfo" rel="nofollow">历史记录</router-link></li>
 			  <li class="dropdown-info"><a href="" @click="logout2">退出登录</a></li>
 			</ul>
 		  </li>
@@ -60,7 +63,15 @@ export default {
 		  this.logout()
 		  swal("您已成功退出登录！")
 		  this.$router.replace({path:'/'})
- 	  }
+ 	  },
+	  showDescription() {
+		  let descriptionHead = document.querySelector('#banner header')
+		  if (null !== descriptionHead) {
+			   document.querySelector('#banner header').style.opacity = 
+			   255 - document.querySelector('#banner header').style.opacity;
+		  }
+		 
+	  }
   }
 }
 </script>
@@ -80,35 +91,47 @@ export default {
   }
   ol, ul {
 		list-style: none;
-	}
+  }
   #header-wrapper {
 		position: relative;
 		background: #ffffff;
 		border-bottom: solid 1px #ccc;
-	}
+  }
 
   h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 		color: inherit;
 		text-decoration: none;
-	}
+  }
+
+  img {
+	  vertical-align: middle;
+	  width: 100px
+  }
+
   
   /* Desktop */
   @media screen and (min-width: 737px) {
 
-		/* Basic */
+	img {
+	    vertical-align: middle;
+	    width: 100px
+	  }
 
-			body, input, textarea, select {
-				font-size: 13pt;
-				line-height: 1.75em;
-			}
 
-			h2 {
-				font-size: 1.5em;
-			}
+	/* Basic */
 
-			h3 {
-				font-size: 1.35em;
-			}
+		body, input, textarea, select {
+			font-size: 13pt;
+			line-height: 1.75em;
+		}
+
+		h2 {
+			font-size: 1.5em;
+		}
+
+		h3 {
+			font-size: 1.35em;
+		}
 
     /* Logo */
 

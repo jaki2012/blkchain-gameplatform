@@ -1,10 +1,11 @@
 <template>
+<div>
   <div id="homevuewrapper">
   <!-- Banner -->
     <section id="banner">
       <header>
-        <h2>Howdy. This is Dopetrope.</h2>
-        <p>A responsive template by HTML5 UP</p>
+        <h2>大家好, 这是大济大利游戏平台</h2>
+        <p>一个区块链技术支持的随机数游戏平台</p>
       </header>
     </section>
   <!-- Intro -->
@@ -45,6 +46,12 @@
         </ul>
       </footer>
     </section>
+      </div>
+    <div class='options'>
+      <button class='dark'></button>
+      <button class='light'></button>
+    </div>
+
   </div>
 </template>
 
@@ -93,6 +100,56 @@ export default {
 		color: inherit;
 		text-decoration: none;
 	}
+
+    button.dark {
+        background-color: #2f3238;
+    }
+
+    button.light {
+        background-color: #f9f9f9;
+    }
+
+    .options {
+        display: none;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .options button {
+      margin-left: .5rem;
+      width: 12px;
+      height: 12px;
+      border: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+      border-radius: 1px;
+      padding-top: 1px;
+      padding-right: 7px;
+      padding-bottom: 2px;
+      padding-left: 7px;
+
+    }
+
+    .light {
+        background-color: #f9f9f9;
+        color: #1a1a1a;
+    }
+
+    .light p {
+        color: rgba(26, 26, 26, 0.5);
+    }
+
+    .light .item {
+        background: #f5f5f5;
+    }
+
+    .light .svg-text {
+        fill: rgba(0, 0, 0, 0.1);
+    }
+
 
   /* Grid */
     .row {

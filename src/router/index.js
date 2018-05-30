@@ -5,6 +5,8 @@ import Login from '@/components/Login'
 import CoinTossing from '@/components/CoinTossing'
 import GameList from '@/components/GameList'
 import Game from '@/components/Game'
+import HistoryInfo from '@/components/HistoryInfo'
+import AboutUs from '@/components/AboutUs'
 
 Vue.use(Router)
 
@@ -38,5 +40,17 @@ export default new Router({
       name: 'Game',
       component: Game
     },
+    {
+      path: '/historyinfo',
+      name: 'HistoryInfo',
+      component: HistoryInfo,
+      meta: { auth : true }
+    },
+    {
+      path: '/aboutus',
+      name: 'AboutUs',
+      component: AboutUs,
+      meta: { auth: false }
+    }
   ]
 })

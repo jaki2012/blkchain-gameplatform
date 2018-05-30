@@ -110,7 +110,7 @@ export default {
 @import '../assets/transition-svg/css/reset.css';
 
 .cd-btn {
-    padding: 0.6em 2.2em;
+    padding: 0.4em 2em;
 }
 
 .cd-modal div {

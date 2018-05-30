@@ -172,6 +172,10 @@
     content: none;
   }
 
+  #footer-wrapper{
+    z-index: 2;
+  }
+
   table {
     border-collapse: collapse;
     border-spacing: 0;
