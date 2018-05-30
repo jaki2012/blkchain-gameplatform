@@ -9,11 +9,9 @@ export default {
     mutations: {
         LOGIN: state => {
           state.userLoggedIn = true
-          console.log('setting...')
           localStorage.setItem('userLoggedIn', true)
         },
         LOGOUT: state => {
-            // 这里要写对啊
           state.userLoggedIn = false
           localStorage.setItem('userLoggedIn', false)
         },

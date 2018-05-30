@@ -70,6 +70,7 @@
 <script>
   import { mapState } from 'vuex'
   import { sha256 } from 'js-sha256'
+  import swal from 'sweetalert';
   export default {
     data() {
       return {

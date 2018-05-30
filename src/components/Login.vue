@@ -14,12 +14,6 @@
           <input v-model="loginPassword" type="password" />
         </label>
         <p class="forgot-pass">忘记密码?</p>
-        <!--
-        <a href="#" class="btn btn--activate" id="btnActivation">
-          <span class="btn__icon"></span>
-          <span class="btn__text" data-wait="Waiting" data-after="Activated">Activate</span>
-        </a>
-        -->
 
         <button type="button" @click="Login()" id="btnActivation" class="btn btn--activate submit">
           <span class="btn__icon"></span>
@@ -83,6 +77,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { USER_SIGNIN } from '../vuex/store/user'
+import swal from 'sweetalert';
 export default {
   name: 'Login',
   data() {
@@ -159,7 +154,7 @@ export default {
       let self = this
       this.$http.get(
         global.HOST + '/login?username=' + this.loginUserName + '&password=' + this.loginPassword,
-      ).then((res => {
+      ).then((res) => {
         console.log(res.body)
         // login succesfully
         if(res.body.error == 0) {
@@ -171,10 +166,15 @@ export default {
           self.JumpToHomepage()
           
         } else {
-          //login failed
+          //login failed处理
+          swal("登录失败","请检查登录用户名及密码是否正确","error",{
+            buttons: "确定",
+          })
+          $('#btnActivation').removeClass('btn--waiting');
+          $('#btnActivation').addClass('btn--activate');
         }
         
-      }))
+      })
     },
     JumpToHomepage(){
       let self = this

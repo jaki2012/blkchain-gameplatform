@@ -34,7 +34,7 @@ export default {
 
   a {
       text-decoration: none;
-      background: red;
+      background: #d52349;
       padding: 0.3em 0.6em 0.3em 0.6em;
       border-radius: 5px;
       color: #fff;

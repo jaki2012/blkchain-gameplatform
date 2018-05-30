@@ -34,7 +34,7 @@
 		  <!-- 查看css可知是-a-->
 		  <li v-show="app.userLoggedIn" class="selfinfo-li" ><a href="#">{{user.username}}</a>
 			<ul>
-			  <li class="dropdown-info"><a href="#">个人信息</a></li>
+			  <li class="dropdown-info"><a href="#"><span style="font-weight: 400;">个人信息</span></a></li>
 			  <li class="dropdown-info"><router-link to="/historyinfo" rel="nofollow">历史记录</router-link></li>
 			  <li class="dropdown-info"><a href="" @click="logout2">退出登录</a></li>
 			</ul>
@@ -48,6 +48,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import { USER_SIGNOUT} from '../vuex/store/user'
+import swal from 'sweetalert';
 
 export default {
   name: 'Header',
