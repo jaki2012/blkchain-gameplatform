@@ -2,9 +2,8 @@
   <div>
     <!-- <p class="tip">大济大利@GAME PLATFORM DEMO</p> -->
     <p class="tip">  <p>
-    <div class="cont">
-      <div class="form sign-in">
-        <h2>欢迎回来,</h2>
+    <!-- <div id="mobile-signin" class="form sign-in">
+        <h2>欢迎回来, 请先登录</h2> 
         <label>
           <span>用户名</span>
           <input v-model="loginUserName" type="text" />
@@ -13,7 +12,52 @@
           <span>登录密码</span>
           <input v-model="loginPassword" type="password" />
         </label>
-        <p class="forgot-pass">忘记密码?</p>
+        <p @click="slide(1)" class="forgot-pass">还没有账号? 点击注册</p><i class="fa fa-user-plus signin-fa"></i>
+
+        <button type="button" @click="Login()" id="btnActivation" class="btn btn--activate submit">
+          <span class="btn__icon"></span>
+           <span class="btn__text" data-wait="正在登录" data-after="登录成功">开始登录</span>
+        </button>
+        <button type="button" class="fb-btn">授权
+         <i class="fa fa-wechat wechat-icon"></i><span>Wechat</span> 登录
+        </button>
+      </div>
+      <div id="mobile-signup" class="form sign-up">
+          <h2>是时候开始你的探索了,</h2>
+          <label>
+            <span>用户昵称</span>
+            <input v-model="registerName" type="text" />
+          </label>
+          <label>
+            <span>邮件</span>
+            <input type="email" />
+          </label>
+          <label>
+            <span>登录密码</span>
+            <input v-model="registerPassword" type="password" />
+          </label>
+
+          <button type="button" @click="Register()" id="btnActivation2" class="btn btn--activate submit">
+            <span class="btn__icon"></span>
+            <span class="btn__text" data-wait="正在注册" data-after="注册成功">开始注册</span>
+          </button>
+          <button type="button" class="fb-btn">使用
+            <i class="fa fa-wechat wechat-icon"></i><span>微信</span> 注册
+          </button>
+        </div>
+        -->
+    <div class="cont">
+      <div class="form sign-in">
+        <h2>欢迎回来, 请先登录</h2>
+        <label>
+          <span>用户名</span>
+          <input v-model="loginUserName" type="text" />
+        </label>
+        <label>
+          <span>登录密码</span>
+          <input v-model="loginPassword" type="password" />
+        </label>
+        <p class="forgot-pass bbb">还没有账号? 点击注册</p><i class="fa fa-user-plus signin-fa"></i>
 
         <button type="button" @click="Login()" id="btnActivation" class="btn btn--activate submit">
           <span class="btn__icon"></span>
@@ -40,12 +84,12 @@
           </div>
         </div>
         <div class="form sign-up">
-          <h2>是时候开始你的探索了,</h2>
+          <h2>是时候开始新的探索了,</h2>
           <label>
-            <span>用户昵称</span>
+            <span>登录用户名</span>
             <input v-model="registerName" type="text" />
           </label>
-          <label>
+          <label style="display: none">
             <span>邮件</span>
             <input type="email" />
           </label>
@@ -53,6 +97,7 @@
             <span>登录密码</span>
             <input v-model="registerPassword" type="password" />
           </label>
+          <p class="forgot-pass aaa">已有账号？点击登录</p><i class="fa fa-sign-in signin-fa"></i>
           <!-- 绑click的元素要对-->
           <button type="button" @click="Register()" id="btnActivation2" class="btn btn--activate submit">
             <span class="btn__icon"></span>
@@ -93,6 +138,14 @@ export default {
   mounted: function(){
     console.log(this.$store)
     document.querySelector('.img__btn').addEventListener('click', function () {
+      document.querySelector('.cont').classList.toggle('s--signup');
+    });
+
+    document.querySelector('.aaa').addEventListener('click', function () {
+      document.querySelector('.cont').classList.toggle('s--signup');
+    });
+
+    document.querySelector('.bbb').addEventListener('click', function () {
       document.querySelector('.cont').classList.toggle('s--signup');
     });
 
@@ -200,6 +253,14 @@ export default {
         self.$router.replace({path: '/home'})
       }, 1000)
       
+    },
+    slide(num){
+      var signinDiv = document.querySelector("#mobile-signin")
+      var signupDiv = document.querySelector("#mobile-signup")
+      if (num === 1){
+        signinDiv.style.display = "none"
+        signupDiv.style.display = "block"
+      }
     }
   }
 }
@@ -743,5 +804,65 @@ input {
     }
   }
 
+  // 正常情况下不显示
+  #mobile-signin, #mobile-signup{
+    display: none
+  }
+
+  .signin-fa {
+    display: none
+  }
+
+  @media screen and (max-width: 736px) {
+
+		/* Basic */ 
+    #mobile-signin {
+      display: block;
+      margin-top: 4em;
+      padding-top: 0;
+      width: 100%
+    }
+
+    #mobile-signup {
+      display: block;
+      margin-top: 4em;
+      padding-top: 0;
+      width: 100%
+    }
+
+    #mobile-signin .forgot-pass {
+      display: inline-block;
+    }
+
+    .signin-fa {
+      font-size: 13px;
+      margin-left: 5px;
+    }
+
+    .cont {
+      height: 420px;
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    .cont .sign-in{
+      padding-top: 0;
+      width: 100%
+    }
+
+    .cont .img {
+      display: none;
+    }
+
+    .cont .sign-up {
+      padding-top: 0;
+      width: 100%;
+    }
+
+    .sub-cont {
+      width: 100%;
+      padding-left: 0
+    }
+  }
 </style>
 

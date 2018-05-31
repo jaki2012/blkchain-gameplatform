@@ -2,7 +2,7 @@
   <div id="app">
     <headerbar></headerbar>
     <router-view/>
-    <footerbar></footerbar>
+    <!-- <footerbar></footerbar> -->
   </div>
 </template>
 
@@ -151,6 +151,10 @@ export default {
 	}
 
 	@media screen and (max-width: 736px) {
+
+    body{
+      margin: 0
+    }
 
 		/* List */
 
