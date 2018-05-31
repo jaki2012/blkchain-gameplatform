@@ -8,7 +8,7 @@
         </p> -->
         <p class="small">
           如果您对游戏的具体玩法或计分方式有疑惑，
-          可访问<a href="#" target="_blank">游戏介绍</a>
+          可访问<a id="gamedescription-link" href="#">游戏介绍</a>
           以获取更多的资讯。
         </p>
       </header>
@@ -246,6 +246,10 @@
 export default {
   name: 'gamelist',
   mounted() {
+
+    document.querySelector("#gamedescription-link").addEventListener('click', function(){
+		  swal("游戏介绍页面仍在建设中。")
+	  })
     document.querySelector('#nav .current').classList.remove("current")
     document.querySelector('.gamelist-li').classList.add("current")
     var items = [],

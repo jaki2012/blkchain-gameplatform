@@ -2,7 +2,7 @@
     <!-- Footer -->
         <div id="footer-wrapper">
             <section id="footer" class="container">
-                <div class="row">
+                <!-- <div class="row">
                     <div class="8u 12u(mobile) mobile2">
                         <section>
                             <header>
@@ -117,14 +117,14 @@
                             </ul>
                         </section>
                     </div>
-                </div>
+                </div> -->
                 <div class="row">
                     <div class="12u">
 
                         <!-- Copyright -->
                             <div id="copyright">
                                 <ul class="links">
-                                    <li>&copy; Untitled. All rights reserved.</li><li>Design: <a rel="nofollow" href="http://html5up.net">HTML5 UP</a></li>
+                                    <li>&copy; Tongji University. All rights reserved.</li><li>Design: <a rel="nofollow" href="#">jaki_windrunner</a></li>
                                 </ul>
                             </div>
 
@@ -2383,7 +2383,7 @@
             }
 
             #footer-wrapper {
-                padding: 2em 25px;
+               /*  padding: 2em 25px; */
                 overflow: hidden;
                 -webkit-transform: translateZ(0);
             }
@@ -2453,7 +2453,7 @@
         /* Copyright */
 
             #copyright {
-                margin: 3em 0 0 0;
+                margin: 2em 0 0 0;
             }
 
                 #copyright .links {

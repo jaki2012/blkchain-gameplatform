@@ -20,16 +20,31 @@
 				target = $this.attr('target');
 
 			if(index < 11){
-				b.push(
-					'<a ' +
-						'class="link depth-' + indent + '"' +
-						( (typeof target !== 'undefined' && target != '') ? ' target="' + target + '"' : '') +
-						( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') +
-					'>' +
-						'<span class="indent-' + indent + '"></span>' +
-						$this.text() +
-					'</a>'
-				);
+				if(index === 9) {
+					b.push(
+						'<a ' +
+							'class="mobile-gamedescription link depth-' + indent + '"' +
+							( (typeof target !== 'undefined' && target != '') ? ' target="' + target + '"' : '') +
+							( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') +
+						'>' +
+							'<span class="indent-' + indent + '"></span>' +
+							$this.text() +
+						'</a>'
+					);
+				} else {
+					b.push(
+						'<a ' +
+							'class="link depth-' + indent + '"' +
+							( (typeof target !== 'undefined' && target != '') ? ' target="' + target + '"' : '') +
+							( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') +
+						'>' +
+							'<span class="indent-' + indent + '"></span>' +
+							$this.text() +
+						'</a>'
+					);
+				}
+
+				
 			} else if (index > 14){ //logout
 				b.push(
 					'<a ' +

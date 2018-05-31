@@ -86,16 +86,21 @@
         <div class="form sign-up">
           <h2>是时候开始新的探索了,</h2>
           <label>
-            <span>登录用户名</span>
+            <span>用户名</span>
             <input v-model="registerName" type="text" />
           </label>
           <label style="display: none">
             <span>邮件</span>
             <input type="email" />
           </label>
+          
           <label>
             <span>登录密码</span>
             <input v-model="registerPassword" type="password" />
+          </label>
+          <label>
+            <span>确认密码</span>
+            <input v-model="registerPasswordConfirm" type="password" />
           </label>
           <p class="forgot-pass aaa">已有账号？点击登录</p><i class="fa fa-sign-in signin-fa"></i>
           <!-- 绑click的元素要对-->
@@ -132,6 +137,7 @@ export default {
       loginPassword: null,
       registerName: null,
       registerPassword: null,
+      registerPasswordConfirm:null,
       userdata: ''
     }
   },
@@ -199,9 +205,19 @@ export default {
           $('#btnActivation2').addClass('btn--waiting');
       }
 
-      if (!this.registerName || !this.registerPassword) {
+      if (!this.registerName || !this.registerPassword ||!this.registerPasswordConfirm) {
         //login failed处理
-        swal("注册失败", "您尚未输入用户名或密码", "error", {
+        swal("注册失败", "您尚未把注册所需信息填写完整", "error", {
+          buttons: "确定",
+        })
+        $('#btnActivation2').removeClass('btn--waiting');
+        $('#btnActivation2').addClass('btn--activate');
+        return
+      }
+
+      if (!(this.registerPassword === this.registerPasswordConfirm)) {
+        //login failed处理
+        swal("注册失败", "两次输入的密码不一致", "error", {
           buttons: "确定",
         })
         $('#btnActivation2').removeClass('btn--waiting');
@@ -898,7 +914,7 @@ input {
     }
 
     .cont {
-      height: 420px;
+      height: 450px;
       width: 100%;
       margin-bottom: 0;
     }

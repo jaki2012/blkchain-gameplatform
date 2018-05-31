@@ -2,7 +2,7 @@
   <div id="app">
     <headerbar></headerbar>
     <router-view/>
-    <!-- <footerbar></footerbar> -->
+    <footerbar></footerbar>
   </div>
 </template>
 
@@ -63,6 +63,7 @@ export default {
     document.querySelector("#logolocation").addEventListener('click', function(){
       swal("您当前所在的页面是" + document.querySelector("#logolocation").innerText + "" )
     })
+
       skel
         .breakpoints({
           desktop: '(min-width: 737px)',
@@ -139,6 +140,13 @@ export default {
       if (skel.vars.os == 'wp' && skel.vars.osVersion < 10)
         $('#titleBar, #navPanel, #page-wrapper')
         .css('transition', 'none');
+
+    // mobile-nav options 书写的时机要摆放对
+    document.querySelector(".mobile-gamedescription").addEventListener('click', function(){
+      // 模拟把导航栏缩回去
+      document.querySelector('.toggle').click()
+      swal("游戏介绍页面仍在建设中。")
+    })
 
     let unloggedlist = document.querySelectorAll(".mobile-unlogged")
     if (this.app.userLoggedIn){

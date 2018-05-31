@@ -28,7 +28,7 @@
               <li><a href="#">其他游戏</a></li>
             </ul>
           </li>
-          <li><a href="#">游戏介绍</a></li>
+          <li class="gamedescription-li"><a href="#">游戏介绍</a></li>
           <li class="aboutus-li"><router-link to="/aboutus" rel="nofollow">关于我们</router-link></li>
 		  <!-- 用v-show提前加载来防止后面加载dropon.js不生效 -->
           <li v-show="!app.userLoggedIn" class="login-li"><router-link to="login" rel="nofollow">登录/注册</router-link></li>
@@ -57,6 +57,10 @@ export default {
   mounted() {
 	  console.log('Header.vue mounted again')
 	  console.log(this.app)
+
+	  document.querySelector(".gamedescription-li").addEventListener('click', function(){
+		  swal("游戏介绍页面仍在建设中。")
+	  })
   },
   methods:{
 	  ...mapActions([USER_SIGNOUT, "logout"]),
