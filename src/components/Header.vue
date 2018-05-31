@@ -4,7 +4,7 @@
     <!-- Logo -->
 	  <img id="logopng" src="../assets/dajidali_logo2.png"></img>
       <h1 class="logoh1" @click="showDescription()" > <router-link to="/home" rel="nofollow">大济大利</router-link></h1>
-	   <a id="logolocation" href="#"><p> 首页 </p></a>
+	   <a id="logolocation" href="#"><p> {{pageName}} </p></a>
 	<!-- Nav -->
       <nav id="nav">
         <ul>
@@ -18,8 +18,8 @@
               <li>
                 <a href="#">棋牌类</a>
                 <ul>
-                  <li><a href="#">斗地主</a></li>
-                  <li><a href="#">21点(BlackJack)</a></li>
+                  <li><a  target="_blank" href="../../static/poker/poker.html">斗地主</a></li>
+                  <li><a href="#">21点 (BlackJack)</a></li>
                   <!-- <li><a href="#">Veroeros feugiat</a></li>
                   <li><a href="#">Nisl sed aliquam</a></li>
                   <li><a href="#">Dolore adipiscing</a></li> -->
@@ -53,8 +53,31 @@ import swal from 'sweetalert';
 
 export default {
   name: 'Header',
-  computed: mapState({ user: state => state.user, app: state => state.app}),
-  mounted() {
+  computed: { ...mapState({
+        user: state => state.user,
+        app: state => state.app
+      }),
+      pageName() {
+        let val = this.$route
+        let pathname = {
+          '/home': '首页',
+          '/gamelist': '游戏列表',
+          '/login': '登录/注册',
+          '/aboutus': '关于我们',
+          '/historyinfo': '历史记录'
+        }
+        // 错误路径最后会跳转到首页
+        let locationname = "首页"
+        if (val.path in pathname) {
+          locationname = pathname[val.path]
+        } else if (val.path.indexOf("/game/") != -1) {
+          locationname = "游戏"
+        }
+		return locationname
+      }
+    },
+    mounted() {
+
 	  console.log('Header.vue mounted again')
 	  console.log(this.app)
 

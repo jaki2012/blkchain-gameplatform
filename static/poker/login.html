@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"> 
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no;"/>
+<title>登录</title>
+<style type="text/css">body{padding:0; margin:0;background-color: gray;} #game{ margin:auto;}</style>
+</head>
+<body>
+<div>
+    <input id="name">
+    <input id="password">
+    <button id="login">登录</button>
+</div>
+
+
+
+
+
+
+<script>
+(function () {
+    document.getElementById('login').onclick = function(){
+        var httpRequest = new XMLHttpRequest();
+        var that = this;
+        httpRequest.onreadystatechange = function () {
+          if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                var result = JSON.parse(httpRequest.responseText);
+              if (result.error == '401' || result.error == '404') {
+                console.log('用户不存在');  
+              } else {
+                var storageStr = JSON.stringify(result);
+                console.log(storageStr)
+                localStorage.setItem("playerInfo",storageStr);
+                window.location.href = "poker.html";
+              }
+            } else {
+              console.log('Error:' + httpRequest.status);
+              
+            }
+          }
+        };
+        var req = 'username=' + document.getElementById('name').value + '&password=' + document.getElementById('password').value;
+        httpRequest.open('GET', 'http://www.92bruce.cn/login?' + req, true);
+        httpRequest.send();
+    }
+    
+    
+})();
+</script>
+
+
+</body>
+</html>

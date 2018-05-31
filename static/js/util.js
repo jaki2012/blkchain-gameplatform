@@ -19,8 +19,26 @@
 				href = $this.attr('href'),
 				target = $this.attr('target');
 
+			var ignore = [3, 4, 5, 7, 8]
+
 			if(index < 11){
-				if(index === 9) {
+				if (ignore.indexOf(index) != -1){
+					// console.log(index)
+				}
+				else if (index === 6) {
+					indent -= 1
+					b.push(
+						'<a ' +
+							'class="link depth-' + indent + '"' +
+							( (typeof target !== 'undefined' && target != '') ? ' target="' + target + '"' : '') +
+							( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') +
+						'>' +
+							'<span class="indent-' + indent + '"></span>' +
+							$this.text() +
+						'</a>'
+					);
+				}
+				else if (index === 9) {
 					b.push(
 						'<a ' +
 							'class="mobile-gamedescription link depth-' + indent + '"' +
@@ -57,16 +75,30 @@
 					'</a>'
 				);
 			} else if (index > 11){
-				b.push(
-					'<a ' +
-						'class="mobile-unlogged link depth-' + indent + '"' +
-						( (typeof target !== 'undefined' && target != '') ? ' target="' + target + '"' : '') +
-						( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') +
-					'>' +
-						'<span class="indent-' + indent + '"></span>' +
-						$this.text() +
-					'</a>'
-				);
+				if (index == 12) {
+					b.push(
+						'<a ' +
+							'class="mobile-unlogged link depth-' + indent + '"' +
+							( (typeof target !== 'undefined' && target != '') ? ' target="' + target + '"' : '') +
+							( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') +
+						'>' +
+							'<span class="indent-' + indent + '"></span>当前用户：' +
+							$this.text() +
+						'</a>'
+					);
+				} else{
+					b.push(
+						'<a ' +
+							'class="mobile-unlogged link depth-' + indent + '"' +
+							( (typeof target !== 'undefined' && target != '') ? ' target="' + target + '"' : '') +
+							( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') +
+						'>' +
+							'<span class="indent-' + indent + '"></span>' +
+							$this.text() +
+						'</a>'
+					);
+				}
+				
 			} else { //index == 11
 				b.push(
 					'<a ' +

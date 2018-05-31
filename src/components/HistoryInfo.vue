@@ -1,52 +1,57 @@
 <template>
   <div class="demo">
-  
     <div class="container1">
+      <div id="loading">
+        <div class="card">
+          <span class="dots-loader">Loading&#8230;</span>
+        </div>
+      </div>
       <div class="row">
         <div class="col-md-12">
-          <div class="main-timeline">
-          <template v-for="record in history">
-            <div class="timeline">
-              <div class="timeline-content">
-                <div class="circle">
-                  <span>
-                    <img src='../assets/coin_toss.png'> </img>
-                    <!-- <i class="fa fa-btc"></i> -->
-                  </span>
-                </div>
-                <div class="content">
-                  <span class="year">Round-Id {{record.round_id}}</span>
-                  <h4 class="title">硬币猜正反</h4>
-                  <p class="description">
-                  <span>server_seed:</span> {{record.server_seed}}<br>
-                  <span>user_seed:</span>  {{record.user_seed}}<br>
-                  <span>server_seed_txid:</span>  {{record.server_seed_txid}}<br>
-                  <span>user_seed_txid:</span> {{record.user_seed_txid}}
+          <div v-if=" history === null || history.length === 0">
+            <p v-if="history">您还没有任何历史记录，请马上开始游戏吧~</p>
+          </div>
+          <div v-else class="main-timeline">
+            <template v-for="record in history">
+              <div class="timeline">
+                <div class="timeline-content">
+                  <div class="circle">
+                    <span>
+                      <img src='../assets/coin_toss.png'> </img>
+                      <!-- <i class="fa fa-btc"></i> -->
+                    </span>
+                  </div>
+                  <div class="content">
+                    <span class="year">Round ID-{{record.round_id}}</span>
+                    <h4 class="title">硬币猜正反</h4>
+                    <p class="description">
+                      <span>server_seed:</span> {{record.server_seed}}
+                      <br>
+                      <span>user_seed:</span> {{record.user_seed}}
+                      <br>
+                      <span>server_seed_txid:</span> {{record.server_seed_txid}}
+                      <br>
+                      <span>user_seed_txid:</span> {{record.user_seed_txid}}
 
-                  </p>
-                  <div class="icon">
-                    <span></span>
+                    </p>
+                    <div class="icon">
+                      <span></span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </template>
+            </template>
           </div>
+          
         </div>
       </div>
-      
-    </div>
-    <div id="loading">
-      <div class="card">
-        <span class="dots-loader">Loading&#8230;</span>
-      </div>
+
     </div>
 
-
-    
   </div>
 
 </template>
+
 
 
 <script>
@@ -78,6 +83,15 @@ export default {
         ).then((res) => {
           self.history = res.body.body.slice(0, 5)
           document.querySelector('#loading').style.display="none"
+          // console.log(self.history.length)
+          if (self.history.length === 0) {
+            // console.log(document.documentElement.clientHeight)
+            // console.log(document.getElementById("footer-wrapper").style.height)
+            // 必须是要字符串px 光数字不行
+            // document.querySelector('.container1').style.minHeight = (document.documentElement.clientHeight - 228 -194)+ 'px'
+            // document.querySelector('.container1').style.Height = '200%'
+            // console.log(document.querySelector('.container1').style)
+          }
         })
         
       }
@@ -140,6 +154,7 @@ span.year {
 
 .container1 {
   width: 76%;
+  min-height: 215px;
   margin-left: auto;
   margin-right: auto;
 } 
@@ -197,6 +212,14 @@ span.year {
       .content .description {
         text-align: left
       }
+
+      /* 永远固定在底部*/ 
+      #footer-wrapper {
+        bottom: 0px !important;
+        position: fixed !important;
+        width: 100% !important;
+      }
+    
     }
 
 </style>

@@ -207,7 +207,7 @@ export default {
 
       if (!this.registerName || !this.registerPassword ||!this.registerPasswordConfirm) {
         //login failed处理
-        swal("注册失败", "您尚未把注册所需信息填写完整", "error", {
+        swal("注册失败", "您尚未把注册所需要的信息填写完整", "error", {
           buttons: "确定",
         })
         $('#btnActivation2').removeClass('btn--waiting');
@@ -251,7 +251,7 @@ export default {
           // watch中无法监控数据 只能在这里将手机导航栏的个人名字写对
           unloggedlist.forEach(function (value, index, array) {
             if (index == 0) {
-              value.innerHTML = "<span class='indent-0'>" + self.registerName  + "</span>"
+              value.innerHTML = "<span class='indent-0'>当前用户：" + self.registerName  + "</span>"
             }
          })
         self.JumpToHomepage()
@@ -298,7 +298,7 @@ export default {
           // watch中无法监控数据 只能在这里将手机导航栏的个人名字写对
           unloggedlist.forEach(function (value, index, array) {
             if (index == 0) {
-              value.innerHTML = "<span class='indent-0'>" + self.loginUserName + "</span>"
+              value.innerHTML = "<span class='indent-0'>当前用户：" + self.loginUserName + "</span>"
             }
           })
 

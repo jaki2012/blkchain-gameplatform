@@ -17,6 +17,7 @@ router.beforeEach(({meta, path}, from, next) => {
   // 获取当前登录状态
   var isLogin = (store.state.app.userLoggedIn === true)
 
+  console.log(path)
   // 强制默认页为登录注册页
   if (!isLogin && path === '/home') {
     
@@ -28,6 +29,12 @@ router.beforeEach(({meta, path}, from, next) => {
   }
   next()
 })
+
+// 跳转后返回顶部
+router.afterEach((to, from, next) => {
+  window.scrollTo(0, 0);
+})
+
 
 /* eslint-disable no-new */
 new Vue({

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en"> 
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no;"/>
+<title>斗地主</title>
+<!--<script type="text/javascript" src="{{static_url('js/phaser.min.js')}}"></script>-->
+<!--<script type="text/javascript" src="{{static_url('js/phaser-input.min.js')}}"></script>-->
+<!--<script type="text/javascript" src="{{static_url('js/boot.js')}}"></script>-->
+<!--<script type="text/javascript" src="{{static_url('js/game.js')}}"></script>-->
+<!--<script type="text/javascript" src="{{static_url('js/rule.js')}}"></script>-->
+<!--<script type="text/javascript" src="{{static_url('js/player.js')}}"></script>-->
+<!--<script type="text/javascript" src="{{static_url('js/player_net.js')}}"></script>-->
+<!--<script type="text/javascript" src="{{static_url('js/net.js')}}"></script>-->
+
+    <script type="text/javascript" src="js/phaser.min.js"></script>
+    <script type="text/javascript" src="js/phaser-input.min.js"></script>
+    <!--<script type="text/javascript" src="js/phaser-arcade-physics.js"></script>-->
+    <script type="text/javascript" src="js/PG2.js"></script>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+    <!--<script type="text/javascript" src="{{static_url('js/phaser-arcade-physics.js')}}"></script>-->
+    <!--<script type="text/javascript" src="{{static_url('js/PG.js')}}"></script>-->
+<style type="text/css">body{padding:0; margin:0;background-color: black;} #game{ margin:auto;}</style>
+</head>
+<body>
+<div id="game"></div>
+<div id="orientation"></div>
+<input id="user" type="hidden" value="{{user}}">
+
+<div id="loading-div" style="width: 100%;height: 100%;top: 0px;position: absolute;background: black;opacity: 0.9;z-index: 1000;display: none" >
+    <div class="l-wrapper">
+        <svg viewBox="0 0 120 120" style="height: 100%" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <g id="circle" class="g-circles g-circles--v3">
+                <circle id="12" transform="translate(35, 16.698730) rotate(-30) translate(-35, -16.698730) " cx="35" cy="16.6987298" r="10"></circle>
+                <circle id="11" transform="translate(16.698730, 35) rotate(-60) translate(-16.698730, -35) " cx="16.6987298" cy="35" r="10"></circle>
+                <circle id="10" transform="translate(10, 60) rotate(-90) translate(-10, -60) " cx="10" cy="60" r="10"></circle>
+                <circle id="9" transform="translate(16.698730, 85) rotate(-120) translate(-16.698730, -85) " cx="16.6987298" cy="85" r="10"></circle>
+                <circle id="8" transform="translate(35, 103.301270) rotate(-150) translate(-35, -103.301270) " cx="35" cy="103.30127" r="10"></circle>
+                <circle id="7" cx="60" cy="110" r="10"></circle>
+                <circle id="6" transform="translate(85, 103.301270) rotate(-30) translate(-85, -103.301270) " cx="85" cy="103.30127" r="10"></circle>
+                <circle id="5" transform="translate(103.301270, 85) rotate(-60) translate(-103.301270, -85) " cx="103.30127" cy="85" r="10"></circle>
+                <circle id="4" transform="translate(110, 60) rotate(-90) translate(-110, -60) " cx="110" cy="60" r="10"></circle>
+                <circle id="3" transform="translate(103.301270, 35) rotate(-120) translate(-103.301270, -35) " cx="103.30127" cy="35" r="10"></circle>
+                <circle id="2" transform="translate(85, 16.698730) rotate(-150) translate(-85, -16.698730) " cx="85" cy="16.6987298" r="10"></circle>
+                <circle id="1" cx="60" cy="10" r="10"></circle>
+            </g>
+        </svg>
+    </div>
+</div>
+
+<div id="tableDiv" style="width: 100%;height: 100%;top: 0px;position: absolute;background: rgb(230, 238, 214);display: none">
+    <table id="table-3" width="80%" height="100%" style="left:5px;top: 5px; bottom: 5px">
+        <tr>
+            <th>玩家一的ID</th>
+            <th>Savings</th>
+        </tr>
+        <tr>
+            <th>玩家二的ID</th>
+            <th>Savings</th>
+        </tr>
+        <tr>
+            <th>玩家三的ID</th>
+            <th>Savings</th>
+        </tr>
+        <tr>
+            <th>玩家一的随机数</th>
+            <th>Savings</th>
+        </tr>
+        <tr>
+            <th>玩家二的随机数</th>
+            <th>Savings</th>
+        </tr>
+        <tr>
+            <th>玩家三的随机数</th>
+            <th>Savings</th>
+        </tr>
+        <tr>
+            <th>服务商随机数</th>
+            <th>sadasdasdasdasdasdasdasdasdas</th>
+        </tr>
+        <tr>
+            <th>服务商随机数记录</th>
+            <th>Savings</th>
+        </tr>
+        <tr>
+            <th>开局记录</th>
+            <th>Savings</th>
+        </tr>
+        <tr>
+            <th>游戏流程记录</th>
+            <th>Savings</th>
+        </tr>
+    </table>
+    <button id="tablePre"  class="tableBtn" style="top: 15%;background: url('./images/i/TablePreBtn.png'); background-size:100% 100%;"></button>
+    <button id="tableNext" class="tableBtn" style="top: 50%;background: url('./images/i/TableNextBtn.png'); background-size:100% 100%;"></button>
+    <button id="tableBack" class="tableBtn" style="top: 85%;background: url('./images/i/TableBackBtn.png'); background-size:100% 100%;"></button>
+</div>
+<div id="textDiv" style="width: 100%;height: 100%;top: 0px;position: absolute;background: url('./images/i/opacityBG.png');display: none">
+    <textarea id="detailText" style="width:80%;height:70%;top: 20%;left: 10%;position: absolute"></textarea>
+    <button id="closeDetail" style="position:absolute;border: none;width:30px; height:30px; right: 10%;top: 82%;background: url('./images/i/BackArrow.png'); background-size:100% 100%;"></button>
+</div>
+<div id="landscapeTip" style="width: 100%;height: 100%;top: 0px;position: absolute;background: url('./images/i/landscapeTip.png');background-size:100% 100%;display: none"></div>
+
+
+
+<script>
+(function () {
+
+    document.getElementById('tableBack').onclick = function () {
+        document.getElementById('tableDiv').style.display = 'none';
+    }
+    document.getElementById('closeDetail').onclick = function () {
+        document.getElementById('textDiv').style.display = 'none';
+    }
+
+
+    var ua = navigator.userAgent;
+
+    var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+
+    isIphone =!ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+
+    isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+
+    isMobile = isIphone || isAndroid;
+
+    //判断
+
+    if(isMobile){
+        var isStarted = false;
+
+        window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+            if (window.orientation === 180 || window.orientation === 0) {
+                //alert('竖屏状态！');
+                document.getElementById('landscapeTip').style.display = 'block';
+            }
+            if (window.orientation === 90 || window.orientation === -90 ){
+                //alert('横屏状态！');
+                document.getElementById('landscapeTip').style.display = 'none';
+                if(!isStarted){
+                    var h = window.innerHeight * 960/window.innerWidth;
+                    if (h > 480) h = 480;
+                    var game = new Phaser.Game(960, h, Phaser.AUTO, 'game');
+                    game.state.add('Boot', PG.Boot);
+                    game.state.add('Preloader', PG.Preloader);
+                    game.state.add('Login', PG.Login);
+                    game.state.add('MainMenu', PG.MainMenu);
+                    game.state.add('Game', PG.Game);
+                    game.state.start('Boot');
+                    isStarted = true;
+                }
+            }
+        }, false);
+        if (window.orientation === 180 || window.orientation === 0) {
+            //alert('竖屏状态！');
+            document.getElementById('landscapeTip').style.display = 'block';
+        }
+        if (window.orientation === 90 || window.orientation === -90 ){
+            //alert('横屏状态！');
+            document.getElementById('landscapeTip').style.display = 'none';
+            // game = new Phaser.Game(960, h, Phaser.AUTO, 'game');
+            var h = window.innerHeight * 960/window.innerWidth;
+            if (h > 540) h = 540;
+            var game = new Phaser.Game(960, h, Phaser.AUTO, 'game');
+            game.state.add('Boot', PG.Boot);
+            game.state.add('Preloader', PG.Preloader);
+            game.state.add('Login', PG.Login);
+            game.state.add('MainMenu', PG.MainMenu);
+            game.state.add('Game', PG.Game);
+            game.state.start('Boot');
+            isStarted = true;
+        }
+    }else{
+        var h = window.innerHeight * 960/window.innerWidth;
+        if (h > 540) h = 540;
+        var game = new Phaser.Game(960, h, Phaser.AUTO, 'game');
+        game.state.add('Boot', PG.Boot);
+        game.state.add('Preloader', PG.Preloader);
+        game.state.add('Login', PG.Login);
+        game.state.add('MainMenu', PG.MainMenu);
+        game.state.add('Game', PG.Game);
+        game.state.start('Boot');
+    }
+
+    
+})();
+</script>
+
+
+</body>
+</html>

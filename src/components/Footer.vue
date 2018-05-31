@@ -124,7 +124,8 @@
                         <!-- Copyright -->
                             <div id="copyright">
                                 <ul class="links">
-                                    <li>&copy; Tongji University. All rights reserved.</li><li>Design: <a rel="nofollow" href="#">jaki_windrunner</a></li>
+                                    <li>&copy; Tongji University. &nbsp; All rights reserved.</li>
+                                    <li>Design: <a style="text-decoration:none" rel="nofollow" href="">jaki_windrunner</a></li>
                                 </ul>
                             </div>
 
@@ -2459,6 +2460,7 @@
                 #copyright .links {
                     padding: 0.75em 1.25em 0.75em 1.25em;
                 }
+
 
     }    
 </style>

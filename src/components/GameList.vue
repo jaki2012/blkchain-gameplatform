@@ -8,7 +8,7 @@
         </p> -->
         <p class="small">
           如果您对游戏的具体玩法或计分方式有疑惑，
-          可访问<a id="gamedescription-link" href="#">游戏介绍</a>
+          可访问 <a id="gamedescription-link" href="#">游戏介绍</a>
           以获取更多的资讯。
         </p>
       </header>
@@ -34,7 +34,97 @@
             </svg>
           </router-link>
           </div>
-          <div class='item'>
+          <div @click="jumpToPoker()" class='item'>
+            <svg preserveAspectRatio='xMidYMid slice' viewBox='0 0 300 200'>
+              <defs>
+                <clipPath id='clip-1'>
+                  <circle cx='0' cy='0' fill='#000' r='150px'></circle>
+                </clipPath>
+              </defs>
+              <text class='svg-text' dy='.3em' x='50%' y='50%'>
+                欢乐斗地主
+              </text>
+              <g clip-path='url(#clip-1)'>
+                <image height='100%' preserveAspectRatio='xMinYMin slice' width='100%' xlink:href='../assets/game/fight_the_land.png'></image>
+                <text class='svg-masked-text' dy='.3em' x='50%' y='50%'>
+                  欢乐斗地主
+                </text>
+              </g>
+            </svg>
+          </div>
+          <div class='undeveloped item'>
+            <svg preserveAspectRatio='xMidYMid slice' viewBox='0 0 300 200'>
+              <defs>
+                <clipPath id='clip-2'>
+                  <circle cx='0' cy='0' fill='#000' r='150px'></circle>
+                </clipPath>
+              </defs>
+              <text class='svg-text' dy='.3em' x='50%' y='50%'>
+                剪刀石头布
+              </text>
+              <g clip-path='url(#clip-2)'>
+                <image height='100%' preserveAspectRatio='xMinYMin slice' width='100%' xlink:href='../assets/game/finger_guessing.png'></image>
+                <text class='svg-masked-text' dy='.3em' x='50%' y='50%'>
+                  剪刀石头布
+                </text>
+              </g>
+            </svg>
+          </div>
+          <div class='undeveloped item'>
+            <svg preserveAspectRatio='xMidYMid slice' viewBox='0 0 300 200'>
+              <defs>
+                <clipPath id='clip-3'>
+                  <circle cx='0' cy='0' fill='#000' r='150px'></circle>
+                </clipPath>
+              </defs>
+              <text class='svg-text' dy='.3em' x='50%' y='50%'>
+                幸运大转盘
+              </text>
+              <g clip-path='url(#clip-3)'>
+                <image height='100%' preserveAspectRatio='xMinYMin slice' width='100%' xlink:href='../assets/game/lucky_wheel.png'></image>
+                <text class='svg-masked-text' dy='.3em' x='50%' y='50%'>
+                  幸运大转盘
+                </text>
+              </g>
+            </svg>
+          </div>
+          <div class='undeveloped item'>
+            <svg preserveAspectRatio='xMidYMid slice' viewBox='0 0 300 200'>
+              <defs>
+                <clipPath id='clip-4'>
+                  <circle cx='0' cy='0' fill='#000' r='150px'></circle>
+                </clipPath>
+              </defs>
+              <text class='svg-text' dy='.3em' x='50%' y='50%'>
+                21点
+              </text>
+              <g clip-path='url(#clip-4)'>
+                <image height='100%' preserveAspectRatio='xMinYMin slice' width='100%' xlink:href='../assets/game/black_jack.png'></image>
+                <text class='svg-masked-text' dy='.3em' x='50%' y='50%'>
+                  21点
+                </text>
+              </g>
+            </svg>
+          </div>
+          <div class='undeveloped item'>
+            <svg preserveAspectRatio='xMidYMid slice' viewBox='0 0 300 200'>
+              <defs>
+                <clipPath id='clip-5'>
+                  <circle cx='0' cy='0' fill='#000' r='150px'></circle>
+                </clipPath>
+              </defs>
+              <text class='svg-text' dy='.3em' x='50%' y='50%'>
+                命运之🎲
+              </text>
+              <g clip-path='url(#clip-5)'>
+                <image height='100%' preserveAspectRatio='xMinYMin slice' width='100%' xlink:href='../assets/game/roll_the_dice.png'></image>
+                <text class='svg-masked-text' dy='.3em' x='50%' y='50%'>
+                  命运之🎲
+                </text>
+              </g>
+            </svg>
+          </div>
+          <!-- <div class='item'>
             <svg preserveAspectRatio='xMidYMid slice' viewBox='0 0 300 200'>
               <defs>
                 <clipPath id='clip-1'>
@@ -124,7 +214,7 @@
               </g>
             </svg>
           </div>
-          <div class='item'>
+          <div @click="jumpToPoker()" class='item'>
             <svg preserveAspectRatio='xMidYMid slice' viewBox='0 0 300 200'>
               <defs>
                 <clipPath id='clip-6'>
@@ -231,7 +321,7 @@
                 </text>
               </g>
             </svg>
-          </div>
+          </div> -->
         </div>
       </main>
     </div>
@@ -243,13 +333,22 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'gamelist',
+  computed: mapState({ user: state => state.user, app: state => state.app}),
   mounted() {
 
     document.querySelector("#gamedescription-link").addEventListener('click', function(){
 		  swal("游戏介绍页面仍在建设中。")
 	  })
+
+    let undevelopedgames = document.querySelectorAll(".undeveloped")
+    undevelopedgames.forEach(function(value, index, array){
+      value.addEventListener('click', function(){
+        swal("该游戏正在火速开发中，请耐心等候哦~")
+      })
+    })
     document.querySelector('#nav .current').classList.remove("current")
     document.querySelector('.gamelist-li').classList.add("current")
     var items = [],
@@ -300,7 +399,42 @@ export default {
     });
   },
   methods: {
-      
+      jumpToPoker(){
+        let self = this
+        // 对接胡永豪（跳转） 后话是这段cookie的删除
+        if (!this.app.userLoggedIn){
+          swal("您还没有登录，点击确认以跳转到登录页面", {
+            icon: "info",
+            buttons: {
+              confirm: {
+                text: "确认",
+                value: "confirm",
+                visible: true,
+              },
+              cancel: {
+                text: "取消",
+                value: "cancel",
+                visible: true,
+              }
+            }
+          }).then((value) =>{
+            switch (value) {
+              case 'confirm' :{
+                self.$router.replace({path : '/login'})
+                break
+              }
+              default:{
+                // do nothing here
+              }
+            }
+          })
+          return
+        }
+        var storageStr = JSON.stringify(this.user);
+        localStorage.setItem("playerInfo", storageStr);
+        // console.log(localStorage.getItem("playerInfo"))
+        window.open("../../static/poker/poker.html")
+      }
   }
 
 }

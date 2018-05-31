@@ -2,7 +2,7 @@
   <div id="pagewrap" class="root">
     <main class="cd-main-content">
       <div class="center">
-        <!-- <h1>Ink Transition Effect</h1> -->
+        <h1 class="game-description">{{gameDescription}}</h1>
         <a href="#0" id="startgame" class="cd-btn cd-modal-trigger">开始游戏</a>
       </div>
     </main>
@@ -31,13 +31,19 @@ export default {
     name: "Game",
     data() {
       return {
-        'currentView': this.$route.params.gamename
+        'currentView': this.$route.params.gamename,
+        gameDescription: '硬币猜正反的游戏过程非常简单：玩家做出HEAD(正面)或者TAIL(反面)的抉择，并指定一个随机数种子。' + 
+        '服务器根据随机数种子算出结果，若玩家的选择与服务器结果相同，则获胜并且获得一定金币结算奖励。'
       }
     },
     computed: mapState({ user: state => state.user}),
     components: {
         "cointossing": CoinTossing
-    },mounted() {
+    }, 
+    mounted() {
+        document.querySelector('#nav .current').classList.remove("current")
+        document.querySelector('.gamelist-li').classList.add("current")
+
         jQuery(document).ready(function ($) {
         //cache some jQuery objects
         var modalTrigger = $('.cd-modal-trigger'),
@@ -109,11 +115,29 @@ export default {
 @import '../assets/transition-svg/css/style.css';
 @import '../assets/transition-svg/css/reset.css';
 
+.game-description {
+  color: #8e6a35;
+  font-family: Museo;
+  width: 20%;
+  text-align: left;
+  margin-top: -3em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.5em;
+}
+
 .cd-btn {
     padding: 0.4em 2em;
 }
 
 .cd-modal div {
     padding-top: 3em;
+}
+
+@media screen and (max-width: 736px) {
+  .game-description {
+  width: 60%;
+  margin-top: -8em;
+  }
 }
 </style>

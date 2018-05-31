@@ -2,7 +2,7 @@
   <div id="app">
     <headerbar></headerbar>
     <router-view/>
-    <footerbar></footerbar>
+    <footerbar v-show="showFooterBar"></footerbar>
   </div>
 </template>
 
@@ -12,7 +12,18 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 export default {
   name: 'App',
-  computed: mapState({ user: state => state.user, app: state => state.app}),
+  computed: {
+    //ES6解析语法
+    ...mapState({
+      user: state => state.user,
+      app: state => state.app
+    }),
+    showFooterBar() {
+      // 登录叶不显示footerbar
+      return (this.$route.path !== '/login')
+    }
+  },
+
   components: {
     'headerbar': Header,
     'footerbar': Footer
@@ -37,26 +48,27 @@ export default {
       // 深度观察
       deep: true
     },
-    $route : { //watch 监控路由
-      handler: (val) => {
-        let pathname = {
-          '/home': '首页',
-          '/gamelist': '游戏列表',
-          '/login': '登录/注册',
-          '/aboutus': '关于我们',
-          '/historyinfo': '历史记录'
-        }
-        // 错误路径最后会跳转到首页
-        let locationname = "首页"
-        if (val.path in pathname){
-          locationname = pathname[val.path]
-        } else if (val.path.indexOf("/game/") != -1){
-          locationname = "游戏"
-        }
+    // $route : { //watch 监控路由
+    //   handler: (val) => {
+    //     console.log(val)
+    //     let pathname = {
+    //       '/home': '首页',
+    //       '/gamelist': '游戏列表',
+    //       '/login': '登录/注册',
+    //       '/aboutus': '关于我们',
+    //       '/historyinfo': '历史记录'
+    //     }
+    //     // 错误路径最后会跳转到首页
+    //     let locationname = "首页"
+    //     if (val.path in pathname){
+    //       locationname = pathname[val.path]
+    //     } else if (val.path.indexOf("/game/") != -1){
+    //       locationname = "游戏"
+    //     }
 
-        document.querySelector("#logolocation p").innerText = locationname;
-      }
-    }
+    //     document.querySelector("#logolocation p").innerText = locationname;
+    //   }
+    // }
   },
 
   mounted(){

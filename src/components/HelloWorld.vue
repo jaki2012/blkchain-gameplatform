@@ -41,8 +41,8 @@
       </div>
       <footer>
         <ul class="actions">
-          <li><a href="#" class="button big">Get Started</a></li>
-          <li><a href="#" class="button alt big">Learn More</a></li>
+          <li><router-link to="/gamelist" rel="nofollow" class="button big">Get Started</router-link></li>
+          <li><router-link to="/aboutus" rel="nofollow" class="button alt big">Learn More</router-link></li>
         </ul>
       </footer>
     </section>
