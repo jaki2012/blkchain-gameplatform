@@ -74,7 +74,6 @@
 	SVGLoader.prototype.hide = function() {
 		var self = this;
 		classie.removeClass( this.el, 'pageload-loading' );
-		console.log(this.el)
 		this._animateSVG( 'out', function() { 
 			// reset path
 			self.path.attr( 'd', self.initialPath );

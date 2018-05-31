@@ -36,10 +36,33 @@ export default {
       },
       // 深度观察
       deep: true
+    },
+    $route : { //watch 监控路由
+      handler: (val) => {
+        let pathname = {
+          '/home': '首页',
+          '/gamelist': '游戏列表',
+          '/login': '登录/注册',
+          '/aboutus': '关于我们',
+          '/historyinfo': '历史记录'
+        }
+        // 错误路径最后会跳转到首页
+        let locationname = "首页"
+        if (val.path in pathname){
+          locationname = pathname[val.path]
+        } else if (val.path.indexOf("/game/") != -1){
+          locationname = "游戏"
+        }
+
+        document.querySelector("#logolocation p").innerText = locationname;
+      }
     }
   },
 
   mounted(){
+    document.querySelector("#logolocation").addEventListener('click', function(){
+      swal("您当前所在的页面是" + document.querySelector("#logolocation").innerText + "" )
+    })
       skel
         .breakpoints({
           desktop: '(min-width: 737px)',

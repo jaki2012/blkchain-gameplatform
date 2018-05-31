@@ -21,7 +21,8 @@
               </div>
             </transition>
             <div class="plus">
-              <p>+</p>
+            <p> + </p>
+             <!-- <i class="fa fa-plus"></i> -->
             </div>
             <div class="random-seed">
               <input v-model="userSeed" placeholder="your seed?">
@@ -38,6 +39,7 @@
           </div>
           <div v-if="buttonsOn" @click="processTopping(1)" class="yes-button">{{yesButton}}</div>
           <div v-if="buttonsOn" @click="processTopping(2)" class="no-button">{{noButton}}</div>
+          <div v-if="buttonsOn" class="no-button1">Go</div>
         </div>
         <div class="right-container">
           <div class="option">
@@ -89,7 +91,7 @@
         showMozWedge: false,
         showPepOption: false,
         currentPrice: 0,
-        totalPrice: "Result",
+        totalPrice: "Click to flip!",
         prices: [2, 2, 3, 3, 3],
         crustClass: "pizza",
         buttonsOn: true,
@@ -109,9 +111,28 @@
     mounted: function () {
       // 保留vue自身的context
       let self = this
+
+      document.querySelector(".no-button1").addEventListener('click', function() {
+        if (!self.userSeed) {
+          swal("您还没有输入随机种子")
+          return
+        } else {　
+          var re = /(^[1-9]\d*$)/;
+          console.log(re.test(self.userSeed))
+          if (!re.test(self.userSeed)) {
+            swal("请输入正确的正整数")
+            return
+          }
+        }
+
+        console.log(document.querySelector('.left-container').style.zIndex)
+        document.querySelector('.left-container').style.zIndex = 0
+      })
       
       // 点击开始游戏的时候自动加载
       document.querySelector('#startgame').addEventListener('click', function(){
+        console.log("=========")
+        console.log(document.querySelector('#loader').style.zIndex)
         self.beginNewRound();
       })
 
@@ -127,65 +148,72 @@
         } else if (self.showTail && self.finalResult === 0){
           bingo = true
         }
+        console.log(self.showHead)
+        console.log(self.showTail)
+        console.log(self.finalResult)
         let bingoText = bingo? "恭喜您猜中了结果！": "很遗憾您没有猜中结果.."
         let iconType = bingo? "success" : "info"
-        console.log(bingoText)
-        let content = '服务器随机数hash: <span style="color:red">' + self.serverSeedHash.substr(0, 12) + '</span></br>' +
-              '服务器随机数: <span style="color:red">' + self.serverSeed + '</span></br>' +
-              'sha256(' + self.serverSeed + ') == <span style="color:red">' + self.serverSeedHash.substr(0, 12) + '</span></br>' +
-              '你的随机数: <span style="color:red">' + self.userSeed + '</span></br>' +
-              '(' + self.userSeed + ' & ' + self.serverSeed + ') & 1 = ' + self.finalResult
+        let finalResultText = self.finalResult==1? "HEAD":"TAIL"
+        let content = '<span class="key">服务器随机数hash:</span> <span style="color:red">' + self.serverSeedHash.substr(0, 12) + '</span></br>' +
+              '<span class="key">服务器随机数:</span>  <span style="color:red">' + self.serverSeed + '</span></br>' +
+              '<span class="key">sha256:</span>(' + self.serverSeed + ') == <span style="color:red">' + self.serverSeedHash.substr(0, 12) + '</span></br>' +
+              '<span class="key">您的随机数:</span> <span style="color:red">' + self.userSeed + '</span></br>' +
+              '结果为:(' + self.userSeed + ' & ' + self.serverSeed + ') & 1 = ' + self.finalResult+'(<span style="color:red">'+ finalResultText +'</span>)'
         var div = document.createElement('div')
         div.innerHTML = content
         // div.classList.add("sweet-alert")
-        swal({
-          title: bingoText,
-          // 多到官网看最新的api文档
-          closeOnClickOutside: false,
-          content: {
-            element: div,
-            attributes: {
-              class: "sweet-alert"
+        // 增加延迟以看清结果
+        setTimeout(function () {
+          swal({
+            title: bingoText,
+            // 多到官网看最新的api文档
+            closeOnClickOutside: false,
+            content: {
+              element: div,
+              attributes: {
+                class: "sweet-alert"
+              }
+            },
+            icon: iconType,
+            buttons: {
+              playagain: {
+                text: "再玩一次",
+                value: "playagain",
+                visible: true,
+                className: "",
+                closeModal: false
+              },
+              confirm: {
+                text: "保存返回",
+                value: "confirm",
+                visible: true,
+                className: "",
+                closeModal: false,
+              },
+            },
+            // timer: 5000,
+          }).then((value) => {
+
+            if (self.finalResult === 1) {
+              document.querySelector('#coin').classList.remove("heads2")
+            } else {
+              document.querySelector('#coin').classList.remove("tails")
             }
-          },
-          icon: iconType,
-          buttons: {
-            playagain: {
-              text: "再玩一次",
-              value: "playagain",
-              visible: true,
-              className: "",
-              closeModal: false
-            },
-            confirm: {
-              text: "保存返回",
-              value: "confirm",
-              visible: true,
-              className: "",
-              closeModal: false,
-            },
-          },
-          // timer: 5000,
-        }).then((value) => {
-          
-          if (self.finalResult === 1) {
-            document.querySelector('#coin').classList.remove("heads2")
-          } else{
-            document.querySelector('#coin').classList.remove("tails")
-          }
-          
-          switch (value) {
-            case "playagain":
-              self.saveResult(1)
-              break
-            // 判定对最后的结果是否已经记录完成， 这个是显示完判定流程界面后，不断向后台轮询(1-2s)是否已经记录完成
-            case "confirm":
-              self.saveResult(0)
-              break;
-            default:
-              break;
-          };
-        });
+
+            switch (value) {
+              case "playagain":
+                self.saveResult(1)
+                break
+                // 判定对最后的结果是否已经记录完成， 这个是显示完判定流程界面后，不断向后台轮询(1-2s)是否已经记录完成
+              case "confirm":
+                self.saveResult(0)
+                break;
+              default:
+                break;
+            };
+          });
+        }, 500)
+
 
       })
       document.querySelector('#coin').addEventListener('animationiteration', function () {
@@ -285,6 +313,7 @@
           console.log(res.body)
           self.serverSeedHash = res.body.server_seed_hash
           loader.hide()
+          document.querySelector('.left-container').style.zIndex=''
         })
       },
       // 轮询保存结果
@@ -309,6 +338,7 @@
             swal.stopLoading()
             swal.close();
             if (num === 1) {
+              // document.querySelector(".left-container").style.zIndex = 1
               self.beginNewRound()
             } else {
               swal({
@@ -336,22 +366,29 @@ body{
   background: #E86152;
 }
 
+#loader {
+  z-index: 1000;
+}
+
 .title{
   font-size: 3em;
   font-weight: 700;
-  color: black;
+  color: white;
+  /*
+  color: #f1a93d;
+  */
   text-transform: uppercase;
-  font-family: "Lato";
+  font-family: Museo;
   text-align: center;
 }
 
 .option{
   font-size: 2.25em;
   font-weight: 500;
-  color: #E86152;
+  color: #bd7b18;
   margin-top: 15%;
   text-transform: uppercase;
-  font-family: "Lato";
+  font-family: Museo;
   text-align: center;
 }
 
@@ -365,6 +402,12 @@ body{
   top: 37.5%;
 }
 
+.plus p {
+    font-weight: 500;
+    font-size: 1.2em;
+    color: #f1a93d;
+}
+
 .random-seed{
   position: absolute;
   left: 90%;
@@ -372,13 +415,18 @@ body{
   
 }
 
+.fa-plus {
+  margin-top: 1.6em;
+  color: #f1ae46;
+}
+
 .random-seed input {
-  border-bottom: 1px solid #E64F3B;
+  border-bottom: 1px solid #f1ae46;
   /* 去掉下划线 */
   outline:none;
   text-align: center;
-  color: #E64F3B;
-  font-family: "Lato";
+  color: #f1ae46;
+  font-family: Museo;
   font-size: 2em;
   border-top:0px;
   border-left:0px;
@@ -388,17 +436,17 @@ body{
 }
 
 .random-seed input::-webkit-input-placeholder{
-    color:#E64F3B;
+    color:#f1ae46;
     font-size: 0.5em
 }
 .random-seed input::-moz-placeholder{   /* Mozilla Firefox 19+ */
-    color:#E64F3B;
+    color:#f1a93d;;
 }
 .random-seed input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
-    color:#E64F3B;
+    color:#f1a93d;;
 }
 .random-seed input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
-    color:#E64F3B;
+    color:#f1ae46;;
 }
 
 .box{
@@ -415,14 +463,15 @@ body{
   height: 100%;
   width: 50%;
   left: 0%;
-  background: #FDE4A7;
+  background: #f3e7d1;
 }
+
 .right-container{
   position: absolute;
   height: 100%;
   width: 50%;
   right: 0%;
-  background: #D15449;
+  background: #f1a93d;
 }
 
 .option-container{
@@ -442,7 +491,7 @@ position: absolute;
   top: 30%;
   left: 17.5%;
   border-radius: 50%;
-  background: #E64F3B;
+  background: #f1a93d;
   /*z-index: 2;*/
   /* 设置子DIV居中 */
   display:flex;
@@ -460,10 +509,11 @@ position: absolute;
 .choice-preview .preview-text {
   font-size: 1.5em;
   text-transform: uppercase;
-  font-family: "Lato";
+  font-family: Museo;
   padding: 15px 10px;
   width: 25%;
   color: #FDE4A7;
+  color: white;
   text-align: center;
 }
 
@@ -687,12 +737,13 @@ position: absolute;
   position: absolute;
   bottom: 10%;
   left: 20%;
-  background: #FFD142;
-  color: #E64F3B;
+  background: #f1a93d;
+  color: #fce4a6;
+  color: white;
   font-weight: 500;
   font-size: 1.5em;
   text-transform: uppercase;
-  font-family: "Lato";
+  font-family: Museo;
   padding: 15px 10px;
   width: 25%;
   text-align: center;
@@ -703,13 +754,13 @@ position: absolute;
   position: absolute;
   bottom: 10%;
   background: #FFD142;
-  color: #E64F3B;
+  color: white;
   font-weight: 500;
   font-size: 1.5em;
   text-transform: uppercase;
-  font-family: "Lato";
+  font-family: Museo;
   padding: 15px 10px;
-  width: 25%;
+  width: 26%;
   text-align: center;
 }
 
@@ -718,16 +769,22 @@ position: absolute;
   position: absolute;
   bottom: 10%;
   right: 20%;
-  background: #E64F3B;
-  color: #FFD142;
+  border-left: 1px;
+  background: #fad142;
+  /* background: #f1a93d;*/
+  color: white;
   font-weight: 500;
   font-size: 1.5em;
   text-transform: uppercase;
-  font-family: "Lato";
+  font-family: Museo;
   padding: 15px 10px;
   width: 25%;
   text-align: center;
 }
+.no-button1{
+  display: none;
+}
+
 
 .shredded-cheese-wedge{
   position: absolute;
@@ -893,6 +950,87 @@ clip-path: polygon(100% 0, 0 0, 50% 100%);
   from { -webkit-transform: rotateY(0); -moz-transform: rotateY(0); transform: rotateY(0); }
   to { -webkit-transform: rotateY(1980deg); -moz-transform: rotateY(1980deg); transform: rotateY(1980deg); }
 }
+
+
+@media screen and (max-width: 736px) {
+
+  .random-seed input{
+    width: 450%;
+  }
+  /* Gamerelated*/
+  #cointossing .box {
+    width: 100%;
+  }
+  #cointossing .left-container {
+    width: 100%;
+    z-index: 1;
+  }
+  #cointossing .right-container {
+    width: 100%;
+  }
+  .choice-preview {
+    width: 47%;
+  }
+  #cointossing {
+    font-family: Museo!important;
+    padding-top: 0;
+  }
+  .title {
+    font-size: 2.1em
+  }
+  
+  .yes-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 10%;
+    left: 10%;
+    background: #f1a93d;
+    color: white;
+    font-weight: 500;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    /* font-family: "Lato"; */
+    padding: 15px 10px;
+    width: 25%;
+    text-align: center;
+  }
+  .no-button {
+    border-left: 1px solid white !important;
+    cursor: pointer;
+    position: absolute;
+    bottom: 10%;
+    right: 30%;
+    border-left: 1px;
+    background: #fad142;
+    background: #f1a93d;
+    color: white;
+    font-weight: 500;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-family: Museo;
+    padding: 15px 10px;
+    width: 25%;
+    text-align: center;
+  }
+  .no-button1 {
+    display: inline;
+    border-radius: 10%;
+    cursor: pointer;
+    position: absolute;
+    bottom: 10%;
+    right: 3%;
+    background: #fad142;
+    color: white;
+    font-weight: 500;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-family: Museo;
+    padding: 15px 10px;
+    width: 15%;
+    text-align: center;
+  }
+}
+
 
 </style>
 

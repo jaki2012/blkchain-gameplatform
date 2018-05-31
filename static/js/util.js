@@ -19,7 +19,7 @@
 				href = $this.attr('href'),
 				target = $this.attr('target');
 
-			if(index < 14){
+			if(index < 11){
 				b.push(
 					'<a ' +
 						'class="link depth-' + indent + '"' +
@@ -30,7 +30,7 @@
 						$this.text() +
 					'</a>'
 				);
-			} else if (index > 17){ //logout
+			} else if (index > 14){ //logout
 				b.push(
 					'<a ' +
 						'class="mobile-unlogged link depth-' + indent + '"' +
@@ -41,7 +41,7 @@
 						$this.text() +
 					'</a>'
 				);
-			} else if (index > 14){
+			} else if (index > 11){
 				b.push(
 					'<a ' +
 						'class="mobile-unlogged link depth-' + indent + '"' +
@@ -52,7 +52,7 @@
 						$this.text() +
 					'</a>'
 				);
-			} else { //index == 14
+			} else { //index == 11
 				b.push(
 					'<a ' +
 						'class="mobile-logged link depth-' + indent + '"' +

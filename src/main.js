@@ -16,7 +16,6 @@ router.beforeEach(({meta, path}, from, next) => {
 
   // 获取当前登录状态
   var isLogin = (store.state.app.userLoggedIn === true)
-  console.log(isLogin, path)
 
   // 强制默认页为登录注册页
   if (!isLogin && path === '/home') {

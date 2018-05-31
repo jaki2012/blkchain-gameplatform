@@ -2,33 +2,34 @@
   <div id="header-wrapper">
   <div id="header">
     <!-- Logo -->
-	  <img src="../assets/dajidali_logo2.png"></img>
+	  <img id="logopng" src="../assets/dajidali_logo2.png"></img>
       <h1 class="logoh1" @click="showDescription()" > <router-link to="/home" rel="nofollow">大济大利</router-link></h1>
-    <!-- Nav -->
+	   <a id="logolocation" href="#"><p> 首页 </p></a>
+	<!-- Nav -->
       <nav id="nav">
         <ul>
           <li class="homepage-li current"><router-link to="/home" rel="nofollow">首页</router-link></li>
           <li class="gamelist-li">
-            <router-link to="gamelist" rel="nofollow">游戏列表</router-link>
+            <router-link to="/gamelist" rel="nofollow">游戏列表</router-link>
             <ul>
-              <li><a href="#">Lorem ipsum dolor</a></li>
-              <li><a href="#">Magna phasellus</a></li>
-              <li><a href="#">Etiam dolore nisl</a></li>
+              <li><router-link to="/game/cointossing" rel="nofollow">硬币猜正反</router-link></li>
+              <li><a href="#">剪刀石头布</a></li>
+              <li><a href="#">幸运大转盘</a></li>
               <li>
-                <a href="#">Phasellus consequat</a>
+                <a href="#">棋牌类</a>
                 <ul>
-                  <li><a href="#">Magna phasellus</a></li>
-                  <li><a href="#">Etiam dolore nisl</a></li>
-                  <li><a href="#">Veroeros feugiat</a></li>
+                  <li><a href="#">斗地主</a></li>
+                  <li><a href="#">21点(BlackJack)</a></li>
+                  <!-- <li><a href="#">Veroeros feugiat</a></li>
                   <li><a href="#">Nisl sed aliquam</a></li>
-                  <li><a href="#">Dolore adipiscing</a></li>
+                  <li><a href="#">Dolore adipiscing</a></li> -->
                 </ul>
               </li>
-              <li><a href="#">Veroeros feugiat</a></li>
+              <li><a href="#">其他游戏</a></li>
             </ul>
           </li>
           <li><a href="#">游戏介绍</a></li>
-          <li><router-link to="/aboutus" rel="nofollow">关于我们</router-link></li>
+          <li class="aboutus-li"><router-link to="/aboutus" rel="nofollow">关于我们</router-link></li>
 		  <!-- 用v-show提前加载来防止后面加载dropon.js不生效 -->
           <li v-show="!app.userLoggedIn" class="login-li"><router-link to="login" rel="nofollow">登录/注册</router-link></li>
 		  <!-- 查看css可知是-a-->
@@ -110,8 +111,13 @@ export default {
   }
 
   
+
+  
   /* Desktop */
   @media screen and (min-width: 737px) {
+	#logolocation {
+	    display: none;
+	}
 
 	img {
 	    vertical-align: middle;
@@ -817,5 +823,32 @@ export default {
 					padding: 0.75em 1.25em 0.75em 1.25em;
 				}
 
+		/* LOGO */
+			#logopng {
+				display: inline-block;
+
+			}
+			.logoh1 {
+				display: inline-block;
+				vertical-align: middle;
+			}
+
+			#logolocation p{
+				display: inline-block;
+			}
+
+			#logolocation {
+			  margin-top: 2px;
+			  margin-left: 20px;
+			  text-decoration: none;
+			  background: #d52349;
+			  padding: 0.3em 0.6em 0.3em 0.6em;
+			  border-radius: 5px;
+			  color: #fff;
+			  font-weight: 700;
+			}
+
+
+		
 	}
 </style>

@@ -100,7 +100,9 @@ Modal window
   height: 100%;
   width: 100%;
   overflow: hidden;
-  background: #402f44 url(../img/modal-bg.jpg) no-repeat center center;
+  
+  background: url(../../../assets/background19.png) no-repeat center center;
+  /* background: #402f44 url(https://i.ytimg.com/vi/Sv8HPkt-RaY/maxresdefault.jpg) no-repeat center center; */
   background-size: cover;
   opacity: 0;
   visibility: hidden;
@@ -226,7 +228,7 @@ Transition Layer
   height: 100%;
   /* our sprite is composed of 25 frames */
   width: 2500%;
-  background: url(../img/ink.png) no-repeat 0 0;
+  background: url(../img/ink2.png) no-repeat 0 0;
   background-size: 100% 100%;
 }
 .cd-transition-layer.visible {

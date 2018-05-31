@@ -59,7 +59,7 @@
         </label>
         <p class="forgot-pass bbb">还没有账号? 点击注册</p><i class="fa fa-user-plus signin-fa"></i>
 
-        <button type="button" @click="Login()" id="btnActivation" class="btn btn--activate submit">
+        <button type="button" @click="Login($event)" id="btnActivation" class="btn btn--activate submit">
           <span class="btn__icon"></span>
            <span class="btn__text" data-wait="正在登录" data-after="登录成功">开始登录</span>
         </button>
@@ -136,7 +136,16 @@ export default {
     }
   },
   mounted: function(){
-    console.log(this.$store)
+    let wechatbtn = document.querySelectorAll(".fb-btn");
+    wechatbtn.forEach(function (val, index, array) {
+      val.addEventListener("click", function () {
+        swal("微信授权功能正在开发中。\n请先使用正常的登录/注册方式。")
+      })
+    })
+
+    
+
+    document.querySelector("#logolocation p").innerText = "登录/注册";
     document.querySelector('.img__btn').addEventListener('click', function () {
       document.querySelector('.cont').classList.toggle('s--signup');
     });
@@ -152,28 +161,23 @@ export default {
     document.querySelector('#nav .current').classList.remove("current")
     document.querySelector('.login-li').classList.add("current")
 
-    $(document).ready(function () {
-      $('#btnActivation').click(function () {
-        if (!$('#btnActivation').hasClass(('btn--activated'))) {
-          $('#btnActivation').removeClass('btn--activate');
-          $('#btnActivation').addClass('btn--waiting');
-          // setTimeout(function () {
-          //   removeWaiting();
-          // }, 3000);
-        }
-      });
-      // 注册按钮部分
-      $('#btnActivation2').click(function () {
-        if (!$('#btnActivation2').hasClass(('btn--activated'))) {
-          $('#btnActivation2').removeClass('btn--activate');
-          $('#btnActivation2').addClass('btn--waiting');
-          // setTimeout(function () {
-          //   removeWaiting2();
-          // }, 3000);
-        }
-      });
+    // 登录按钮
+    // $(document).ready(function () {
+    //   $('#btnActivation').click(function (event) {
+    //     if (!$('#btnActivation').hasClass(('btn--activated'))) {
+    //       $('#btnActivation').removeClass('btn--activate');
+    //       $('#btnActivation').addClass('btn--waiting');
+    //     }
+    //   });
+    //   // 注册按钮部分
+    //   $('#btnActivation2').click(function () {
+    //     if (!$('#btnActivation2').hasClass(('btn--activated'))) {
+    //       $('#btnActivation2').removeClass('btn--activate');
+    //       $('#btnActivation2').addClass('btn--waiting');
+    //     }
+    //   });
 
-    });
+    // });
 
   
   function removeWaiting(){
@@ -190,6 +194,21 @@ export default {
   methods: {
     ...mapActions([USER_SIGNIN,"enterLoginPage","leaveLoginPage","login"]),
     Register() {
+      if (!$('#btnActivation2').hasClass(('btn--activated'))) {
+          $('#btnActivation2').removeClass('btn--activate');
+          $('#btnActivation2').addClass('btn--waiting');
+      }
+
+      if (!this.registerName || !this.registerPassword) {
+        //login failed处理
+        swal("注册失败", "您尚未输入用户名或密码", "error", {
+          buttons: "确定",
+        })
+        $('#btnActivation2').removeClass('btn--waiting');
+        $('#btnActivation2').addClass('btn--activate');
+        return
+      }
+      // 注册成功可以跳转首页 弹出swal确认
       console.log("registering")
       let self = this
       this.$http.get(
@@ -199,19 +218,53 @@ export default {
         //   password: this.registerPassword
         // }
       ).then((res) => {
+        if (res.body ===1) {
+          swal("该用户名已被注册","请修改用户名以避免与已有的用户名冲突", "warning")
+          $('#btnActivation2').removeClass('btn--waiting');
+          $('#btnActivation2').addClass('btn--activate');
+        } else {
         console.log(res)
         $('#btnActivation2').removeClass('btn--waiting');
         $('#btnActivation2').addClass('btn--activated');
         self.userdata = res.body
         self.login()
         // 必须先login再跳转
+
+        let unloggedlist = document.querySelectorAll(".mobile-unlogged")
+
+          // watch中无法监控数据 只能在这里将手机导航栏的个人名字写对
+          unloggedlist.forEach(function (value, index, array) {
+            if (index == 0) {
+              value.innerHTML = "<span class='indent-0'>" + self.registerName  + "</span>"
+            }
+         })
         self.JumpToHomepage()
-        })
+        }
+        
+      })
 
     },
-    Login() {
+
+    Login(event) {
+      if (!$('#btnActivation').hasClass(('btn--activated'))) {
+          $('#btnActivation').removeClass('btn--activate');
+          $('#btnActivation').addClass('btn--waiting');
+      }
       // hold the vue context
       let self = this
+      if (!this.loginUserName || !this.loginPassword) {
+        //login failed处理
+        swal("登录失败", "您尚未输入用户名或密码", "error", {
+          buttons: "确定",
+        })
+        $('#btnActivation').removeClass('btn--waiting');
+        $('#btnActivation').addClass('btn--activate');
+        return
+      }
+
+      
+      // console.log("b")
+
       this.$http.get(
         global.HOST + '/login?username=' + this.loginUserName + '&password=' + this.loginPassword,
       ).then((res) => {
@@ -834,7 +887,12 @@ input {
       display: inline-block;
     }
 
+    .forgot-pass{
+      display: inline-block;
+    }
+
     .signin-fa {
+      display: inline-block;
       font-size: 13px;
       margin-left: 5px;
     }
@@ -846,6 +904,7 @@ input {
     }
 
     .cont .sign-in{
+      margin-top: 1em;
       padding-top: 0;
       width: 100%
     }
@@ -855,6 +914,7 @@ input {
     }
 
     .cont .sign-up {
+      margin-top: 1em;
       padding-top: 0;
       width: 100%;
     }

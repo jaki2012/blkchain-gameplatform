@@ -3,7 +3,7 @@
     <img src="../assets/dajidali_logo.png"></img>
     <i class="fa fa-copyright"></i>
     <p class="copyright">A gameplatorm maintained by Tongji University.</p>
-    <p>如果您有任何问题，欢迎随时联系我们的团队。 <a href="mailto:ji-gameplatform@gmail.com">ji-gameplatform@gmail.com</a></p>
+    <p class="description">如果您有任何问题，欢迎随时联系我们的团队。 <a href="mailto:ji-gameplatform@gmail.com">ji-gameplatform@gmail.com</a></p>
   </div>
 </template>
 
@@ -11,6 +11,10 @@
 <script>
 export default {
     name:"aboutus",
+    mounted() {
+        document.querySelector('#nav .current').classList.remove("current")
+        document.querySelector('.aboutus-li').classList.add("current")
+    }
 }
 </script>
 
@@ -25,6 +29,7 @@ export default {
   }
 
   p {
+      font-weight: 500;
       color: #5d5d5d;
   }
   p.copyright {
@@ -46,7 +51,7 @@ export default {
       display: block;
       margin-left: auto;
       margin-right: auto;
-      max-width: 300px;
+      max-width: 250px;
       margin-bottom: 2em;
   }
 
@@ -54,6 +59,20 @@ export default {
       p a {
           display: block;
           text-align: center;
+          margin: 1em 1em;
+      }
+
+      .aboutus img {
+          margin-top: 1.5em;
+          margin-bottom: 0em;
+      }
+
+      .aboutus {
+          padding: 2em 0;
+      }
+
+      .aboutus .description {
+          margin-top: 0;
       }
   }
 </style>

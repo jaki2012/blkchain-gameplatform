@@ -15,13 +15,13 @@
                   </span>
                 </div>
                 <div class="content">
-                  <span class="year">Round id {{record.round_id}}</span>
+                  <span class="year">Round-Id {{record.round_id}}</span>
                   <h4 class="title">硬币猜正反</h4>
                   <p class="description">
                   <span>server_seed:</span> {{record.server_seed}}<br>
-                  user_seed: {{record.user_seed}}<br>
-                  server_seed_txid: {{record.server_seed_txid}}<br>
-                  user_seed_txid: {{record.user_seed_txid}}
+                  <span>user_seed:</span>  {{record.user_seed}}<br>
+                  <span>server_seed_txid:</span>  {{record.server_seed_txid}}<br>
+                  <span>user_seed_txid:</span> {{record.user_seed_txid}}
 
                   </p>
                   <div class="icon">
@@ -94,6 +94,16 @@ export default {
 @import url('../assets/history/css/demo.css');
 @import url('../assets/history/css/style.css');
 
+@font-face { 
+  font-family:GCTB; /*这里是说明调用来的字体名字*/ 
+  src: url(../assets/template/fonts/GauntletClassic_TB.woff.ttf); /*这里是字体文件路径*/ 
+} 
+
+@font-face {
+  font-family: Museo;
+  src: url(../assets/template/fonts/Museo900-Regular.otf)
+}
+
 
 #loading {
 	width: 50%;
@@ -127,6 +137,7 @@ span.year {
   width: 164px;
 }
 
+
 .container1 {
   width: 76%;
   margin-left: auto;
@@ -139,7 +150,18 @@ span.year {
   word-wrap: break-word;
   font-weight: 500;
   color: #5d5d5d!important;
-  font-family: 'Open Sans'
+  font-family: 'Open Sans';
+  font-family: GCTB;
+}
+
+.description span{
+  font-family: Museo;
+  text-transform: uppercase;
+}
+
+.description {
+  font-size : 1.2em!important;
+  color : black;
 }
 
   /* Desktop */
@@ -155,6 +177,10 @@ span.year {
   /* Mobile */
 
     @media screen and (max-width: 736px) {
+
+      #loading {
+        margin-top: 8em;
+      }
       
       .circle img {
         width: 115px;
@@ -162,6 +188,11 @@ span.year {
 
       .container1 {
         width: 96%;
+      }
+
+      .demo {
+        width: 86%;
+        margin-left: 8%;
       }
       .content .description {
         text-align: left

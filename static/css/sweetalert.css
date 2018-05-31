@@ -1,3 +1,13 @@
+@font-face { 
+  font-family:GCTB; /*这里是说明调用来的字体名字*/ 
+  src: url(..//fonts/GauntletClassic_TB.woff.ttf); /*这里是字体文件路径*/ 
+} 
+
+@font-face {
+  font-family: Museo;
+  src: url(../fonts/Museo500-Regular.otf)
+}
+
 body.stop-scrolling {
   height: 100%;
   overflow: hidden; }
@@ -51,16 +61,21 @@ body.stop-scrolling {
     display: block; }
   .swal-content div {
     color: #797979;
+    color: #52636b;
     font-size: 16px;
+    font-family: Museo;
     text-align: center;
     font-weight: 300;
     position: relative;
     text-align: left;
     float: none;
     /* margin: 0 21%; */
-    margin-left: 23%;
+    margin-left: 19%;
     padding: 0;
     line-height: normal; }
+    .swal-content div .key{
+      text-transform: uppercase;
+    }
   .sweet-alert fieldset {
     border: none;
     position: relative; }
@@ -714,3 +729,11 @@ body.stop-scrolling {
 
 .sweet-alert .sa-icon.sa-success .sa-line.sa-long {
   -ms-transform: rotate(-45deg) \9; }
+
+  @media screen and (max-width: 736px) {
+    .swal-content div {
+      width: 93%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }

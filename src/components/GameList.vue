@@ -2,13 +2,13 @@
   <div>
     <div class='container'>
       <header>
-        <h1>请选择你想玩的游戏</h1>
+        <h1>请选择您想玩的游戏</h1>
         <!-- <p>
         部分游戏正在开发中..
         </p> -->
         <p class="small">
-          如果你对游戏的具体玩法或计分方式有疑惑，
-          可访问<a href="http://www.cjgammon.com/" target="_blank">游戏介绍</a>
+          如果您对游戏的具体玩法或计分方式有疑惑，
+          可访问<a href="#" target="_blank">游戏介绍</a>
           以获取更多的资讯。
         </p>
       </header>
@@ -485,6 +485,16 @@ export default {
 
     .light .svg-text {
         fill: rgba(0, 0, 0, 0.1);
+    }
+
+    @media screen and (max-width: 736px) {
+      h1 {
+        font-size: 2rem
+      }
+
+      .options {
+        display: none;
+      }
     }
 
 
