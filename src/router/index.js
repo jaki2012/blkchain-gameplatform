@@ -15,6 +15,10 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: '/home'
+    },
+    {
+      path: '/home',
       name: 'HelloWorld',
       component: HelloWorld,
       meta: { auth: false }
@@ -58,6 +62,11 @@ export default new Router({
       name: 'Logout',
       component: Logout,
       meta: { auth: false }
+    },
+    // 需要放在最下面，默认处理所有找不到的路径
+    {
+      path: '*',
+      redirect: '/aboutus'
     }
   ]
 })

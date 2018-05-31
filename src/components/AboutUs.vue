@@ -2,8 +2,8 @@
   <div class="aboutus">
     <img src="../assets/dajidali_logo.png"></img>
     <i class="fa fa-copyright"></i>
-    <p class="copyright">A gameplatorm supported by Tongji University.</p>
-    <p>如果您有任何问题，欢迎随时联系我们的团队 <a href="mailto:ji-gameplatform@gmail.com">ji-gameplatform@gmail.com</a></p>
+    <p class="copyright">A gameplatorm maintained by Tongji University.</p>
+    <p>如果您有任何问题，欢迎随时联系我们的团队。 <a href="mailto:ji-gameplatform@gmail.com">ji-gameplatform@gmail.com</a></p>
   </div>
 </template>
 
@@ -21,7 +21,7 @@ export default {
   }
   i {
       display: inline-block;
-      margin-right: 2px;
+      margin-right: -2px;
   }
 
   p {
@@ -48,6 +48,13 @@ export default {
       margin-right: auto;
       max-width: 300px;
       margin-bottom: 2em;
+  }
+
+  @media screen and (max-width: 736px) {
+      p a {
+          display: block;
+          text-align: center;
+      }
   }
 </style>
 

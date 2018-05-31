@@ -64,13 +64,14 @@
         </div>
       </div>
     </div>
-
+    <!--
     <a href="https://dribbble.com/shots/3306190-Login-Registration-form" target="_blank" class="icon-link">
       <img src="http://icons.iconarchive.com/icons/uiconstock/socialmedia/256/Dribbble-icon.png">
     </a>
     <a href="https://twitter.com/NikolayTalanov" target="_blank" class="icon-link icon-link--twitter">
       <img src="https://cdn1.iconfinder.com/data/icons/logotypes/32/twitter-128.png">
     </a>
+    -->
   </div>
 </template>
 
@@ -137,8 +138,9 @@ export default {
     ...mapActions([USER_SIGNIN,"enterLoginPage","leaveLoginPage","login"]),
     Register() {
       console.log("registering")
+      let self = this
       this.$http.get(
-        global.HOST + '/reg?username=' + this.registerName + '&password=' + this.loginPassword,
+        global.HOST + '/reg?username=' + this.registerName + '&password=' + this.registerPassword
         // {
         //   username: this.registerName,
         //   password: this.registerPassword
@@ -147,7 +149,12 @@ export default {
         console.log(res)
         $('#btnActivation2').removeClass('btn--waiting');
         $('#btnActivation2').addClass('btn--activated');
-      })
+        self.userdata = res.body
+        self.login()
+        // 必须先login再跳转
+        self.JumpToHomepage()
+        })
+
     },
     Login() {
       // hold the vue context
@@ -163,8 +170,18 @@ export default {
           self.userdata = res.body
           self.login()
           // 必须先login再跳转
-          self.JumpToHomepage()
           
+          let unloggedlist = document.querySelectorAll(".mobile-unlogged")
+
+          // watch中无法监控数据 只能在这里将手机导航栏的个人名字写对
+          unloggedlist.forEach(function (value, index, array) {
+            if (index == 0) {
+              value.innerHTML = "<span class='indent-0'>" + self.loginUserName + "</span>"
+            }
+          })
+
+          self.JumpToHomepage()
+       
         } else {
           //login failed处理
           swal("登录失败","请检查登录用户名及密码是否正确","error",{
@@ -180,7 +197,7 @@ export default {
       let self = this
       this.USER_SIGNIN(this.userdata)
       setTimeout(function(){
-        self.$router.replace({path: '/'})
+        self.$router.replace({path: '/home'})
       }, 1000)
       
     }

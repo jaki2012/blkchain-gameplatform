@@ -3,11 +3,11 @@
   <div id="header">
     <!-- Logo -->
 	  <img src="../assets/dajidali_logo2.png"></img>
-      <h1 class="logoh1" @click="showDescription()" > <router-link to="/" rel="nofollow">大济大利</router-link></h1>
+      <h1 class="logoh1" @click="showDescription()" > <router-link to="/home" rel="nofollow">大济大利</router-link></h1>
     <!-- Nav -->
       <nav id="nav">
         <ul>
-          <li class="homepage-li current"><router-link to="/" rel="nofollow">首页</router-link></li>
+          <li class="homepage-li current"><router-link to="/home" rel="nofollow">首页</router-link></li>
           <li class="gamelist-li">
             <router-link to="gamelist" rel="nofollow">游戏列表</router-link>
             <ul>
@@ -32,7 +32,7 @@
 		  <!-- 用v-show提前加载来防止后面加载dropon.js不生效 -->
           <li v-show="!app.userLoggedIn" class="login-li"><router-link to="login" rel="nofollow">登录/注册</router-link></li>
 		  <!-- 查看css可知是-a-->
-		  <li v-show="app.userLoggedIn" class="selfinfo-li" ><a href="#">{{user.username}}</a>
+		  <li v-show="app.userLoggedIn" class="selfinfo-li" ><a href="#" id="username-lia">{{user.username}}</a>
 			<ul>
 			  <li class="dropdown-info"><a href="#"><span style="font-weight: 400;">个人信息</span></a></li>
 			  <li class="dropdown-info"><router-link to="/historyinfo" rel="nofollow">历史记录</router-link></li>

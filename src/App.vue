@@ -19,8 +19,7 @@ export default {
   },
   watch: {
     'app.userLoggedIn': {
-      handler: (val, oldVal) => {
-        console.log(val)
+      handler: (val, oldVal) => {  
         let unloggedlist = document.querySelectorAll(".mobile-unlogged")
         if (val == true) {
           unloggedlist.forEach(function (value, index, array) {
@@ -35,15 +34,12 @@ export default {
         }
 
       },
-
-      
       // 深度观察
       deep: true
     }
   },
 
   mounted(){
-
       skel
         .breakpoints({
           desktop: '(min-width: 737px)',
@@ -120,8 +116,6 @@ export default {
       if (skel.vars.os == 'wp' && skel.vars.osVersion < 10)
         $('#titleBar, #navPanel, #page-wrapper')
         .css('transition', 'none');
-
-
 
     let unloggedlist = document.querySelectorAll(".mobile-unlogged")
     if (this.app.userLoggedIn){

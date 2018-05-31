@@ -4,7 +4,7 @@ export const USER_SIGNIN = "USER_SIGNIN";
 export const USER_SIGNOUT = "USER_SIGNOUT";
 
 export default {
-    state: JSON.parse(localStorage.getItem('user')) || {},
+    state: JSON.parse(localStorage.getItem('user')) || { username: null},
     mutations: {
         [USER_SIGNIN](state, user) {
             localStorage.setItem('user', JSON.stringify(user))
