@@ -31,7 +31,6 @@
                 console.log('用户不存在');  
               } else {
                 var storageStr = JSON.stringify(result);
-                console.log(storageStr)
                 localStorage.setItem("playerInfo",storageStr);
                 window.location.href = "poker.html";
               }

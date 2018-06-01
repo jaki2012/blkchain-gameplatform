@@ -1,6 +1,8 @@
 <template>
   <div class="demo">
+  <router-link to="/gamelist" rel="nofollow">点此进入游戏大厅</router-link>
     <div class="container1">
+      
       <div id="loading">
         <div class="card">
           <span class="dots-loader">Loading&#8230;</span>
@@ -114,6 +116,11 @@ export default {
 } 
 
 @font-face {
+  font-family: Asar;
+  src: url(../assets/template/fonts/sofia2.ttf)
+}
+
+@font-face {
   font-family: Museo;
   src: url(../assets/template/fonts/Museo900-Regular.otf)
 }
@@ -139,7 +146,7 @@ export default {
 
 .demo {
   background: #fff;
-  padding: 4em 0;
+  padding: 2em 0;
   font-weight: 500;
 }
 
@@ -154,24 +161,39 @@ span.year {
 
 .container1 {
   width: 76%;
-  min-height: 215px;
+  
   margin-left: auto;
   margin-right: auto;
 } 
+
+.demo {
+  min-height: 425px;
+}
+
+.demo a {
+      text-decoration: none;
+      background: #d52349;
+      padding: 0.3em 0.6em 0.3em 0.6em;
+      border-radius: 5px;
+      color: #fff;
+      font-weight: 700;
+}
 
 .description {
   /* keep the layour */
   word-break: break-all;
   word-wrap: break-word;
   font-weight: 500;
-  color: #5d5d5d!important;
+  color: #f9b625!important;
   font-family: 'Open Sans';
-  font-family: GCTB;
+  font-family: Asar;
 }
 
 .description span{
-  font-family: Museo;
+  font-family: Avenir;
   text-transform: uppercase;
+  font-weight: 700;
+  color: #5d5d5d
 }
 
 .description {
@@ -202,6 +224,7 @@ span.year {
       }
 
       .container1 {
+        margin-top: 2em;
         width: 96%;
       }
 

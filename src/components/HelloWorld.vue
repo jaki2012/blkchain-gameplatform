@@ -5,12 +5,12 @@
     <section id="banner">
       <header>
         <h2>大家好, 这是大济大利游戏平台</h2>
-        <p>一个区块链技术支持的随机数游戏平台</p>
+        <p>一个区块链技术支持的公共游戏平台</p>
       </header>
     </section>
   <!-- Intro -->
-    <section id="intro" class="container">
-      <div class="row">
+     <section id="intro" class="container">
+      <!-- <div class="row">
         <div class="4u 12u(mobile)">
           <section class="first">
             <i class="icon featured fa-cog"></i>
@@ -38,14 +38,14 @@
             <p>Nisl amet dolor sit ipsum veroeros sed blandit consequat veroeros et magna tempus.</p>
           </section>
         </div>
-      </div>
+      </div> -->
       <footer>
         <ul class="actions">
-          <li><router-link to="/gamelist" rel="nofollow" class="button big">Get Started</router-link></li>
-          <li><router-link to="/aboutus" rel="nofollow" class="button alt big">Learn More</router-link></li>
+          <li><router-link to="/gamelist" rel="nofollow" class="button big">立刻开始游戏！</router-link></li>
+          <!-- <li><router-link to="/aboutus" rel="nofollow" class="button alt big">Learn More</router-link></li> -->
         </ul>
       </footer>
-    </section>
+    </section> 
       </div>
     <div class='options'>
       <button class='dark'></button>
@@ -2079,7 +2079,7 @@ export default {
 		/* Banner */
 
 			#banner {
-				margin: 2em 0 4em 0 !important;
+				margin: 2em 0 2em 0 !important;
 				padding: 6em 0;
 			}
 

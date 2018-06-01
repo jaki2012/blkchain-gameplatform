@@ -63,7 +63,6 @@ body.stop-scrolling {
     color: #797979;
     color: #52636b;
     font-size: 16px;
-    font-family: Museo;
     text-align: center;
     font-weight: 300;
     position: relative;
@@ -74,7 +73,17 @@ body.stop-scrolling {
     padding: 0;
     line-height: normal; }
     .swal-content div .key{
+      font-weight: 400;
+      font-family: GCTB;
       text-transform: uppercase;
+    }
+
+    .swal-content div .ggg  {
+      
+        font-family: 'LATO';
+        font-weight: 400;
+        letter-spacing: 0.05em;
+      
     }
   .sweet-alert fieldset {
     border: none;
@@ -732,7 +741,7 @@ body.stop-scrolling {
 
   @media screen and (max-width: 736px) {
     .swal-content div {
-      width: 93%;
+      width: 96%;
       margin-left: auto;
       margin-right: auto;
     }

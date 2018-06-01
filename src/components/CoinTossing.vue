@@ -4,7 +4,16 @@
       <div class="box">
         <div class="left-container">
           <div class="option">{{topping}}</div>
+          <div class="serverrecord">
+            <p>
+              服务端已质押随机数哈希:<span>{{shortSeedHash}} </span>
+            </p>
+            <p>
+              质押的链上记录为：<span>{{shortSeedTxid}}</span>
+            </p>
+            </div>
           <div class="option-container">
+            
             <transition name="bounce">
               <div v-if="showHead" class="choice-preview">
                 <div>
@@ -37,6 +46,7 @@
               </div>
             </transition>
           </div>
+          <div class="userSeedBtn">重新生成随机数</div>
           <div v-if="buttonsOn" @click="processTopping(1)" class="yes-button">{{yesButton}}</div>
           <div v-if="buttonsOn" @click="processTopping(2)" class="no-button">{{noButton}}</div>
           <div v-if="buttonsOn" class="no-button1">Go</div>
@@ -102,16 +112,39 @@
         flipped: false,
         serverSeedHash: null,
         serverSeedTxid: null,
+        userSeedTxid: null,
         serverSeed: null,
         // 服务器返回的最终结果
-        finalResult: null
+        finalResult: null,
+        txidUrl: null
       }
     },
-    computed: mapState({ user: state => state.user}),
+    computed: { ...mapState({
+        user: state => state.user
+      }),
+      shortSeedHash() {
+        let self = this
+        if (self.serverSeedHash) {
+          let len = self.serverSeedHash.length
+          len = self.serverSeedHash.substr(0, 10) + ' ..... ' + self.serverSeedHash.substr(len - 10)
+          return len
+        }
+      },
+      shortSeedTxid() {
+        let self = this
+        if (self.serverSeedTxid) {
+          let len = self.serverSeedTxid.length
+          len = self.serverSeedTxid.substr(0, 12) + ' ..... ' + self.serverSeedTxid.substr(len - 12)
+          return len
+        }
+      }
+    },
+
+
     mounted: function () {
       // 保留vue自身的context
       let self = this
-
+      
       document.querySelector(".no-button1").addEventListener('click', function() {
         if (!self.userSeed) {
           swal("您还没有输入随机种子")
@@ -124,16 +157,17 @@
             return
           }
         }
-
-        console.log(document.querySelector('.left-container').style.zIndex)
         document.querySelector('.left-container').style.zIndex = 0
       })
       
       // 点击开始游戏的时候自动加载
       document.querySelector('#startgame').addEventListener('click', function(){
-        console.log("=========")
-        console.log(document.querySelector('#loader').style.zIndex)
         self.beginNewRound();
+      })
+
+      // 重新生成随机数
+      document.querySelector('.userSeedBtn').addEventListener('click', function() {
+        self.generateRandomUserSeed()
       })
 
       console.log("CoinTossing mounted.")
@@ -148,17 +182,16 @@
         } else if (self.showTail && self.finalResult === 0){
           bingo = true
         }
-        console.log(self.showHead)
-        console.log(self.showTail)
-        console.log(self.finalResult)
+        let userSeedText = self.userSeedTxid.substr(0, 6) + ' ... ' + self.userSeedTxid.substr(self.userSeedTxid.length-6) 
         let bingoText = bingo? "恭喜您猜中了结果！": "很遗憾您没有猜中结果.."
         let iconType = bingo? "success" : "info"
         let finalResultText = self.finalResult==1? "HEAD":"TAIL"
-        let content = '<span class="key">服务器随机数hash:</span> <span style="color:red">' + self.serverSeedHash.substr(0, 12) + '</span></br>' +
-              '<span class="key">服务器随机数:</span>  <span style="color:red">' + self.serverSeed + '</span></br>' +
-              '<span class="key">sha256:</span>(' + self.serverSeed + ') == <span style="color:red">' + self.serverSeedHash.substr(0, 12) + '</span></br>' +
-              '<span class="key">您的随机数:</span> <span style="color:red">' + self.userSeed + '</span></br>' +
-              '结果为:(' + self.userSeed + ' & ' + self.serverSeed + ') & 1 = ' + self.finalResult+'(<span style="color:red">'+ finalResultText +'</span>)'
+        let content = '<span class="key">服务器随机数hash:</span> <span class="ggg" style="color:red; font-family:Open Sans">' + self.serverSeedHash.substr(0, 12) + '</span></br>' +
+              '<span class="key">服务器随机数:</span> <span class="ggg" style="color:red">' + self.serverSeed + '</span></br>' +
+              '<span class="key">sha256(' + self.serverSeed + ')</span> == <span class="ggg" style="color:red">' + self.serverSeedHash.substr(0, 12) + '</span></br>' +
+              '<span class="key">您的随机数:</span> <span class="ggg" style="color:red">' + self.userSeed + '</span></br>' +
+              '<span class="key">本局游戏链上记录:</span> <span class="ggg" style="color:red">' + userSeedText + '</span></br>' +
+              '<span class="key">结果:</span> <span class="ggg" style="color:red">(' + self.userSeed + '&' + self.serverSeed + ')&1 = ' + self.finalResult+'('+ finalResultText +')</span>'
         var div = document.createElement('div')
         div.innerHTML = content
         // div.classList.add("sweet-alert")
@@ -232,6 +265,11 @@
       });
       },
     methods: {
+      generateRandomUserSeed() {
+        console.log("generating user ramdom seed")
+        // 随机生成四位数范围内的随机数
+        this.userSeed = Math.round((Math.random() * 8999) + 1000)
+      },
       tossCoin() {
         let self = this
         if (self.flipping == true) {
@@ -261,6 +299,7 @@
             let ret = sha256(arr)
             console.log("===========")
             console.log(ret)
+            self.userSeedTxid = res.body.userseedtxid
             console.log(self.serverSeedHash)
             if (ret === self.serverSeedHash) {
               let end = (res.body.server_seed ^ self.userSeed) & 1
@@ -299,19 +338,21 @@
       },
       beginNewRound() {
         let self = this
+        // begin newround会清空userseed
         // 清空userSeed
-        self.userSeed = null
+        // self.userSeed = null
+        self.generateRandomUserSeed()
         var loader = new SVGLoader(document.getElementById('loader'), {
           speedIn: 300,
           easingIn: mina.easeinout
         });
         loader.show();
-        console.log(self.user)
         self.$http.get(
           global.HOST + '/cointossing/newround?token=' + self.user.token
         ).then((res) => {
           console.log(res.body)
           self.serverSeedHash = res.body.server_seed_hash
+          self.serverSeedTxid = res.body.server_seed_txid
           loader.hide()
           document.querySelector('.left-container').style.zIndex=''
         })
@@ -327,6 +368,7 @@
           ).then((res) => {
             console.log(res.body)
             finished = res.body.finish
+            self.txidUrl = res.body.txid_url
           })
         }, 500)
 
@@ -337,18 +379,41 @@
             clearInterval(stopIntervalCtx)
             swal.stopLoading()
             swal.close();
-            if (num === 1) {
-              // document.querySelector(".left-container").style.zIndex = 1
-              self.beginNewRound()
-            } else {
-              swal({
-                text: "您的结果已保存成功！",
-                icon: "success",
-                buttons: "我知道了",
-              }).then((value) => {
-                self.$router.replace({path:'/gamelist'})
-              });
-            }
+
+            self.$http.get(
+              self.txidUrl
+            ).then((res) => {
+              var requestBody = res;
+              let resultTxt = res.body.transactionEnvelope.payload.data.actions[0].payload.action.proposal_response_payload.extension.response.payload;
+            
+              if (num === 1) {
+                // document.querySelector(".left-container").style.zIndex = 1
+                self.beginNewRound()
+                // 提醒逻辑要不要
+                // swal({
+                //   title: "结果已保存成功！点击确认已开始新一局游戏",
+                //   text: resultTxt,
+                //   icon: "success",
+                //   buttons: "",
+                // }).then((value) => {
+                  
+                // });
+              } else {
+                swal({
+                  title: "您的结果已保存成功！",
+                  text: resultTxt,
+                  icon: "success",
+                  buttons: "我知道了",
+                }).then((value) => {
+                  self.$router.replace({
+                    path: '/gamelist'
+                  })
+                });
+              }
+              })
+
+
+            
           }
         }, 400)
       }
@@ -398,7 +463,7 @@ body{
 
 .plus {
   position: absolute;
-  left: 75%;
+  left: 68%;
   top: 37.5%;
 }
 
@@ -410,8 +475,8 @@ body{
 
 .random-seed{
   position: absolute;
-  left: 90%;
-  top: 40%;
+  left: 88%;
+  top: 34%;
   
 }
 
@@ -486,10 +551,10 @@ position: absolute;
 
 .choice-preview{
   position: absolute;
-  height: 40%;
-  width: 45%;
-  top: 30%;
-  left: 17.5%;
+    height: 45%;
+    width: 50%;
+    top: 30%;
+    left: 5.5%;
   border-radius: 50%;
   background: #f1a93d;
   /*z-index: 2;*/
@@ -732,6 +797,40 @@ position: absolute;
   border-radius: 50%;
 }
 
+.serverrecord {
+  padding-top: 1em;
+  padding-left: 0.3em;
+  /* margin-left: 2.5em; */
+}
+
+.serverrecord p {
+  width: 92%;
+  margin-left: 6%;
+  margin-right: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  text-align: left;
+  font-size: 0.85em;
+  color: #bd7a19;
+}
+
+.userSeedBtn {
+  position: absolute;
+  font-size: 0.9em;
+  padding: 0.5em;
+  width: 27%;
+  border-radius: 5px;
+  top: 54%;
+  left: 54%;
+  color: white;
+  background: #f1a93d
+}
+
+
+.serverrecord p span {
+  font-family: Museo;
+}
+
 .yes-button{
   cursor: pointer;
   position: absolute;
@@ -760,7 +859,7 @@ position: absolute;
   text-transform: uppercase;
   font-family: Museo;
   padding: 15px 10px;
-  width: 26%;
+  width: 28%;
   text-align: center;
 }
 
@@ -954,8 +1053,16 @@ clip-path: polygon(100% 0, 0 0, 50% 100%);
 
 @media screen and (max-width: 736px) {
 
+  .serverrecord p {
+    font-size: 0.8em
+  }
+
+  .userSeedBtn {
+    left: 57%;
+  }
+
   .random-seed input{
-    width: 450%;
+    width: 500%;
   }
   /* Gamerelated*/
   #cointossing .box {
@@ -969,7 +1076,7 @@ clip-path: polygon(100% 0, 0 0, 50% 100%);
     width: 100%;
   }
   .choice-preview {
-    width: 47%;
+    width: 53%;
   }
   #cointossing {
     font-family: Museo!important;

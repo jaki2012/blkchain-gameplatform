@@ -2,7 +2,8 @@
   <div class="aboutus">
     <img src="../assets/dajidali_logo.png"></img>
     <i class="fa fa-copyright"></i>
-    <p class="copyright">A gameplatorm maintained by Tongji University.</p>
+    <!-- An open gameplatform-->
+    <p class="copyright">A gameplatform maintained by Tongji Univ.</p>
     <p class="description">如果您有任何问题，欢迎随时联系我们的团队。 <a href="mailto:ji-gameplatform@gmail.com">ji-gameplatform@gmail.com</a></p>
   </div>
 </template>

@@ -2,8 +2,11 @@
   <div id="pagewrap" class="root">
     <main class="cd-main-content">
       <div class="center">
-        <h1 class="game-description">{{gameDescription}}</h1>
+        <img class="game-desc-icon" src='../assets/coin_toss.png'> </img>
+        <h1 class="game-description">硬币猜正反的游戏过程非常简单：玩家做出HEAD（正面）或者TAIL（反面）的抉择，并指定一个随机数种子。
+        服务器根据该随机数种子计算出结果，若玩家的选择的硬币投掷结果与服务器结果相同，则判定获胜。</h1>
         <a href="#0" id="startgame" class="cd-btn cd-modal-trigger">开始游戏</a>
+        <a id="seeHistory" @click="jumpToHistory()" class="cd-btn">历史记录</a>
       </div>
     </main>
     <!-- .cd-main-content -->
@@ -106,6 +109,11 @@ export default {
           resize = false;
         }
       });
+    },
+    methods: {
+      jumpToHistory() {
+        this.$router.replace({path: '/historyinfo'})
+      }
     }
 }
 </script>
@@ -115,15 +123,28 @@ export default {
 @import '../assets/transition-svg/css/style.css';
 @import '../assets/transition-svg/css/reset.css';
 
+.game-desc-icon {
+  width: 200px;
+  margin-bottom: 1.5em;
+}
+
 .game-description {
+  /*
+    空两行
+     text-indent:2em;
+  */
+ 
   color: #8e6a35;
-  font-family: Museo;
-  width: 20%;
+  width: 30%;
   text-align: left;
   margin-top: -3em;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 1.5em;
+}
+
+.center {
+  vertical-align: 0;
 }
 
 .cd-btn {
@@ -138,6 +159,22 @@ export default {
   .game-description {
   width: 60%;
   margin-top: -8em;
+  }
+
+  .cd-main-content {
+    height: 85vh!important;
+  }
+
+  .game-desc-icon {
+    margin-bottom: 6.5em;
+  }
+
+  .center{
+    padding-top: 1em!important;
+  }
+
+  #seeHistory {
+    margin-top: 0.5em;
   }
 }
 </style>

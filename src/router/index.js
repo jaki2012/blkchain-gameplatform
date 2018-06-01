@@ -8,6 +8,7 @@ import GameList from '@/components/GameList'
 import Game from '@/components/Game'
 import HistoryInfo from '@/components/HistoryInfo'
 import AboutUs from '@/components/AboutUs'
+import PersonInfo from '@/components/PersonInfo'
 
 Vue.use(Router)
 
@@ -56,6 +57,12 @@ export default new Router({
       name: 'AboutUs',
       component: AboutUs,
       meta: { auth: false }
+    },
+    {
+      path: '/personinfo',
+      name: 'PersonInfo',
+      component: PersonInfo,
+      meta: { auth: true}
     },
     {
       path: '/logout',

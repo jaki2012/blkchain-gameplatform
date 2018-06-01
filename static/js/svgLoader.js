@@ -59,7 +59,6 @@
 	}
 
 	SVGLoader.prototype.show = function() {
-		console.log("i am in")
 		if( this.isAnimating ) return false;
 		this.isAnimating = true;
 		// animate svg

@@ -62,6 +62,9 @@
               <text class='svg-text' dy='.3em' x='50%' y='50%'>
                 剪刀石头布
               </text>
+              <text class='noshangjia svg-text' dy='1.8em' x='50%' y='50%'>
+                （尚未上架）
+              </text>
               <g clip-path='url(#clip-2)'>
                 <image height='100%' preserveAspectRatio='xMinYMin slice' width='100%' xlink:href='../assets/game/finger_guessing.png'></image>
                 <text class='svg-masked-text' dy='.3em' x='50%' y='50%'>
@@ -79,6 +82,9 @@
               </defs>
               <text class='svg-text' dy='.3em' x='50%' y='50%'>
                 幸运大转盘
+              </text>
+              <text class='noshangjia svg-text' dy='1.8em' x='50%' y='50%'>
+                （尚未上架）
               </text>
               <g clip-path='url(#clip-3)'>
                 <image height='100%' preserveAspectRatio='xMinYMin slice' width='100%' xlink:href='../assets/game/lucky_wheel.png'></image>
@@ -98,6 +104,9 @@
               <text class='svg-text' dy='.3em' x='50%' y='50%'>
                 21点
               </text>
+              <text class='noshangjia svg-text' dy='1.8em' x='50%' y='50%'>
+                （尚未上架）
+              </text>
               <g clip-path='url(#clip-4)'>
                 <image height='100%' preserveAspectRatio='xMinYMin slice' width='100%' xlink:href='../assets/game/black_jack.png'></image>
                 <text class='svg-masked-text' dy='.3em' x='50%' y='50%'>
@@ -115,6 +124,9 @@
               </defs>
               <text class='svg-text' dy='.3em' x='50%' y='50%'>
                 命运之🎲
+              </text>
+              <text class='noshangjia svg-text' dy='1.8em' x='50%' y='50%'>
+                （尚未上架）
               </text>
               <g clip-path='url(#clip-5)'>
                 <image height='100%' preserveAspectRatio='xMinYMin slice' width='100%' xlink:href='../assets/game/roll_the_dice.png'></image>
@@ -433,7 +445,8 @@ export default {
         var storageStr = JSON.stringify(this.user);
         localStorage.setItem("playerInfo", storageStr);
         // console.log(localStorage.getItem("playerInfo"))
-        window.open("../../static/poker/poker.html")
+        // window.open("../../static/poker/poker.html")
+        window.location.href = "../../static/poker/poker.html"
       }
   }
 
@@ -442,6 +455,14 @@ export default {
 
 
 <style scoped>
+
+    .noshangjia {
+      font-size: 0.9em
+    }
+
+    .undeveloped svg{
+      background: #9ea3ad
+    }
     * {
         margin: 0;
         box-sizing: border-box;

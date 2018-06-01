@@ -37,6 +37,7 @@ Patterns - reusable parts of our design
   font-weight: 700;
   text-transform: uppercase;
   background-color: #a5c4bc;
+  /* background-color: #a1e0fd; */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -83,7 +84,8 @@ Main Content
 .cd-main-content .center {
   /* vertically align inside parent element */
   display: table-cell;
-  vertical-align: middle;
+  padding-top:5em;
+  /* vertical-align: middle; */
   text-align: center;
 }
 
@@ -228,7 +230,7 @@ Transition Layer
   height: 100%;
   /* our sprite is composed of 25 frames */
   width: 2500%;
-  background: url(../img/ink2.png) no-repeat 0 0;
+  background: url(../img/ink4.png) no-repeat 0 0;
   background-size: 100% 100%;
 }
 .cd-transition-layer.visible {

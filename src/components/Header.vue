@@ -18,7 +18,8 @@
               <li>
                 <a href="#">棋牌类</a>
                 <ul>
-                  <li><a  target="_blank" href="../../static/poker/poker.html">斗地主</a></li>
+				  <!-- 理论上应该要携带一个返回到哪个页面的参数 -->
+                  <li><a href="../../static/poker/poker.html">欢乐斗地主</a></li>
                   <li><a href="#">21点 (BlackJack)</a></li>
                   <!-- <li><a href="#">Veroeros feugiat</a></li>
                   <li><a href="#">Nisl sed aliquam</a></li>
@@ -35,7 +36,7 @@
 		  <!-- 查看css可知是-a-->
 		  <li v-show="app.userLoggedIn" class="selfinfo-li" ><a href="#" id="username-lia">{{user.username}}</a>
 			<ul>
-			  <li class="dropdown-info"><a href="#"><span style="font-weight: 400;">个人信息</span></a></li>
+			  <li class="dropdown-info"><router-link to="/personinfo" rel="nofollow"><span style="font-weight: 400;">个人信息</span></router-link></li>
 			  <li class="dropdown-info"><router-link to="/historyinfo" rel="nofollow">历史记录</router-link></li>
 			  <li class="dropdown-info"><a href="" @click="logout2">退出登录</a></li>
 			</ul>
@@ -64,7 +65,8 @@ export default {
           '/gamelist': '游戏列表',
           '/login': '登录/注册',
           '/aboutus': '关于我们',
-          '/historyinfo': '历史记录'
+          '/historyinfo': '历史记录',
+		  '/personinfo': '个人信息'
         }
         // 错误路径最后会跳转到首页
         let locationname = "首页"

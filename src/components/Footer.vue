@@ -124,7 +124,7 @@
                         <!-- Copyright -->
                             <div id="copyright">
                                 <ul class="links">
-                                    <li>&copy; Tongji University. &nbsp; All rights reserved.</li>
+                                    <li>&copy; Powered by 大济大利. &nbsp; All rights reserved.</li>
                                     <li>Design: <a style="text-decoration:none" rel="nofollow" href="">jaki_windrunner</a></li>
                                 </ul>
                             </div>
@@ -1722,7 +1722,8 @@
         }
 
     #footer-wrapper {
-        margin-top: 4em;
+        /*
+        margin-top: 4em;*/
         -webkit-font-smoothing: subpixel-antialiased;
         font-family: 'Source Sans Pro';
         text-align: left;
@@ -1903,7 +1904,7 @@
                 }
 
                 #footer-wrapper {
-                    padding: 4em 0 4em 0;
+                    padding: 2em 0 2em 0;
                 }
 
                     #footer-wrapper header {

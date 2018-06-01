@@ -257,6 +257,10 @@ export default {
         self.JumpToHomepage()
         }
         
+      }).catch((res) => {
+        swal("注册失败","请确保用户名不含有中文及特殊字符", "warning")
+          $('#btnActivation2').removeClass('btn--waiting');
+          $('#btnActivation2').addClass('btn--activate');
       })
 
     },
@@ -313,6 +317,10 @@ export default {
           $('#btnActivation').addClass('btn--activate');
         }
         
+      }).catch((res) => {
+        swal("登录失败","请检查用户名是否含有中文或特殊字符", "warning")
+          $('#btnActivation').removeClass('btn--waiting');
+          $('#btnActivation').addClass('btn--activate');
       })
     },
     JumpToHomepage(){

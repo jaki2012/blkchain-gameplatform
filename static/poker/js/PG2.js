@@ -66,7 +66,7 @@ PG.Preloader = {
     this.load.image('bg_notitle', 'images/i/BG_notitle.jpg');
     this.load.image('gameBG', 'images/i/GameBG.png');
     this.load.image('alarm', 'images/i/btn/alarm.png');
-    this.load.image('exit', 'images/i/btn/exit.png');
+    // this.load.image('exit', 'images/i/btn/exit.png');
     this.load.image('hint', 'images/i/HintBtn.png');
     this.load.image('default', 'images/i/btn/icon_default.png');
     this.load.image('farmer', 'images/i/Farmer.png');
@@ -108,6 +108,7 @@ PG.Preloader = {
     this.load.image('tableTxidBtn_BIG', 'images/i/TableTxidBtn_BIG.png');
     this.load.image('detailBtn', 'images/i/detailBtn.png');
     this.load.image('mengban', 'images/i/mengban.png');
+    this.load.image('exit', 'images/i/exit.png');
     this.load.spritesheet('poker', 'images/i/poker.png', 90, 120);
     this.load.json('rule', 'rule.json');
   },
@@ -127,8 +128,6 @@ PG.Preloader = {
     // } else {
     //   this.state.start('Login');
     // }
-    console.log("see here")
-    console.log(localStorage.playerInfo)
     PG.playerInfo = JSON.parse(localStorage.playerInfo);
     this.state.start('MainMenu');
       // document.getElementById('loading-div').style.display = 'none';
@@ -169,6 +168,10 @@ PG.MainMenu = {
     humanRoom.anchor.set(0.5);
     this.game.world.add(humanRoom);
 
+
+    var exitGame = this.game.add.button(this.game.world.centerX+320, this.game.world.centerY - 250, 'exit', function(){
+        window.location.href = "/#/gamelist";
+    }, this);
 
   },
 
