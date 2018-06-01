@@ -1411,6 +1411,10 @@ export default {
 
 		/* Basic */
 
+    #intro {
+      margin-top: 4em;
+    }
+
 			body, input, textarea, select {
 				font-size: 13pt;
 				line-height: 1.75em;
